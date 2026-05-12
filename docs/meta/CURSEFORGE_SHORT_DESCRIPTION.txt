@@ -1,0 +1,1 @@
+Python-powered automation for Minecraft 1.21.1 on NeoForge, with cable-based networking, in-world screens, Material I/O routing, crafting automation, and an optional no-code builder.
