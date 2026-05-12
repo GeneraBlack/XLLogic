@@ -2,6 +2,8 @@
 
 The static project homepage lives in this folder.
 
+Public deployment: https://xllogic.bls-isp.net
+
 ## Pages
 
 - index.html: landing page and positioning

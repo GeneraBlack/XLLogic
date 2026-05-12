@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XL Logic | Documentation Hub</title>
-    <meta name="description" content="Documentation hub for XL Logic with links to the README, roadmap, beginner guide, dedicated block reference pages, scenarios, and local website preview instructions.">
+    <meta name="description" content="Documentation hub for XL Logic with links to the live website, README, roadmap, beginner guide, dedicated block reference pages, scenarios, and local website preview instructions.">
     <link rel="icon" href="assets/icons/docs.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/site.css">
 </head>
@@ -36,7 +36,11 @@
             <div class="page-card reveal">
                 <div class="kicker">Documentation hub</div>
                 <h1>The website is the front door. The repo stays the deep source.</h1>
-                <p>This page connects the homepage to the existing markdown documents in the project and to the dedicated block reference pages on the site itself. That keeps named screens, Material I/O routing, builder templates, runtime sandbox rules, and the deeper technical notes aligned instead of letting the site drift away from the repo docs.</p>
+                <p>This page connects the live website to the existing markdown documents in the project and to the dedicated block reference pages on the site itself. That keeps named screens, Material I/O routing, builder templates, runtime sandbox rules, and the deeper technical notes aligned instead of letting the site drift away from the repo docs.</p>
+                <div class="button-row">
+                    <a class="button button--primary" href="https://xllogic.bls-isp.net">Open live site</a>
+                    <a class="button button--ghost" href="../../README.md">Open repository README</a>
+                </div>
             </div>
         </section>
 
@@ -178,8 +182,8 @@
         <section class="page-section two-column">
             <article class="content-card reveal">
                 <div class="section-header">
-                    <div class="kicker">Local preview</div>
-                    <h2>View the homepage from inside the repository.</h2>
+                    <div class="kicker">Live site and local preview</div>
+                    <h2>Use the public deployment or preview the same pages locally.</h2>
                 </div>
                 <div class="code-panel">
                     <div class="code-panel__header">
@@ -189,7 +193,7 @@
                     <pre><code id="docs-preview-command">Set-Location "D:\projekt\XLLogic"
 py -m http.server 4173 -d docs/site</code></pre>
                 </div>
-                <p>Then open <span class="chip">http://localhost:4173</span> in the browser. For a quick smoke test, opening <span class="chip">docs/site/index.html</span> directly also works.</p>
+                <p>The public deployment lives at <span class="chip">https://xllogic.bls-isp.net</span>. For local preview, open <span class="chip">http://localhost:4173</span> in the browser after starting the local server. For a quick smoke test, opening <span class="chip">docs/site/index.html</span> directly also works.</p>
             </article>
 
             <aside class="callout reveal" aria-label="Purpose of the website compared to the repository docs">

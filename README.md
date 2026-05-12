@@ -4,6 +4,8 @@ XL Logic is a NeoForge prototype for Minecraft 1.21.1 that explores ComputerCraf
 
 The project combines a server-authoritative GraalPy runtime, visible cable-based discovery, named endpoints, individually targetable screens, direct Material I/O routing, crafting automation, and an optional no-code builder that generates real Python.
 
+Live website: https://xllogic.bls-isp.net
+
 ## Current status
 
 XL Logic is still a prototype, but it already contains a substantial playable vertical slice:
@@ -134,6 +136,7 @@ This means the mod is designed around in-game automation, not around exposing th
 
 The repository already contains an English website and reference set:
 
+- Live website: https://xllogic.bls-isp.net
 - Installation guide: [INSTALL.md](INSTALL.md)
 - Landing page: [docs/site/index.html](docs/site/index.html)
 - Feature overview: [docs/site/features.html](docs/site/features.html)

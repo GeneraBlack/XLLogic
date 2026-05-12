@@ -74,11 +74,15 @@ dependencies {
 }
 
 tasks.named('shadowJar').configure {
-    archiveClassifier = 'bundled'
+    archiveClassifier = ''
     configurations = [project.configurations.libraries]
     mergeServiceFiles()
     zip64 true
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+tasks.named('jar').configure {
+    enabled = false
 }
 
 tasks.named('assemble').configure {
@@ -113,7 +117,7 @@ tasks.withType(ProcessResources).configureEach {
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
-            from components.java
+            artifact tasks.named('shadowJar')
         }
     }
 
