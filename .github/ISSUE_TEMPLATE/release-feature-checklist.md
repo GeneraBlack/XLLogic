@@ -2,6 +2,7 @@
 name: Release / Feature Checklist
 about: Track release readiness or a larger feature milestone for XL Logic.
 title: "[Checklist] "
+labels: ["checklist", "release"]
 ---
 
 ## Scope
