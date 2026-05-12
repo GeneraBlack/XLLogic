@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Python Automation for Minecraft</title>
+    <meta name="description" content="XL Logic is a NeoForge project for Minecraft 1.21.1: Python automation, named screens, cable networks, Material I/O routing, and a no-code builder inside one mod.">
+    <link rel="icon" href="assets/icons/computer.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a class="is-active" href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="python.html">Python</a>
+                <a href="builder.html">Builder</a>
+                <a href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <article class="hero-copy reveal">
+                <div class="kicker">Wire it. Script it. Watch it run.</div>
+                <h1>Automation that feels like a real machine room.</h1>
+                <p>XL Logic combines a server-authoritative GraalPy runtime, local cable-segment discovery, named screen targets, direct Material I/O routing, and a no-code builder into one Minecraft automation stack. Instead of placing isolated gadgets, you wire explicit control flows: sample world and device state, route items and fluids between endpoints, target dedicated display panels, and drive repeatable production logic. The runtime stays sandboxed, so scripts execute through exported XL Logic APIs rather than the host OS, local files, spawned processes, Java interop, or server-admin commands.</p>
+                <div class="hero-actions">
+                    <a class="button button--primary" href="features.html">Explore the feature set</a>
+                    <a class="button button--ghost" href="python.html">See Python examples</a>
+                    <a class="button button--ghost" href="builder.html">Understand the builder</a>
+                </div>
+                <div class="metric-grid">
+                    <div class="metric">
+                        <strong>Runtime</strong>
+                        <span>GraalPy on Java 21</span>
+                    </div>
+                    <div class="metric">
+                        <strong>Target</strong>
+                        <span>Minecraft 1.21.1 + NeoForge 21.1.218</span>
+                    </div>
+                    <div class="metric">
+                        <strong>Authoring</strong>
+                        <span>Python and no-code builder side by side</span>
+                    </div>
+                    <div class="metric">
+                        <strong>Validation</strong>
+                        <span>50/50 GameTests passing</span>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="hero-panel reveal" aria-label="XL Logic system snapshot">
+                <div class="hero-panel__top">
+                    <strong>System snapshot</strong>
+                    <span class="status-badge">Active prototype</span>
+                </div>
+                <div class="signal-stack">
+                    <div class="signal-card">
+                        <strong>Computer</strong>
+                        <p>Server-side Python execution, runtime state, output history, and session handling with recovery drafts.</p>
+                    </div>
+                    <div class="signal-card">
+                        <strong>Screens</strong>
+                        <p>Persistent rich-output panels on the block face, including tables, cards, multiblock screens, and individually named targets.</p>
+                    </div>
+                    <div class="signal-card">
+                        <strong>Builder</strong>
+                        <p>Beginner-friendly block editor with templates, comparisons, world-state checks, and direct source-to-sink routing blocks.</p>
+                    </div>
+                </div>
+                <div class="hero-schematic">
+                    <div class="schematic-row">
+                        <div class="schematic-node">
+                            <img src="assets/icons/computer.svg" alt="">
+                            <strong>Code</strong>
+                            <p>Python or blocks</p>
+                        </div>
+                        <div class="schematic-node">
+                            <img src="assets/icons/network.svg" alt="">
+                            <strong>Network</strong>
+                            <p>Cables, buses, bridges</p>
+                        </div>
+                        <div class="schematic-node">
+                            <img src="assets/icons/screen.svg" alt="">
+                            <strong>Feedback</strong>
+                            <p>Live output on screens</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Why XL Logic?</div>
+                <h2>One coherent system instead of a pile of disconnected gadgets.</h2>
+                <p>This mod is not just a computer block with a text editor. It blends network topology, world-state logic, remote policies, multiplayer session handling, visible output, and a builder for players who do not want to start with Python.</p>
+            </div>
+            <div class="summary-grid">
+                <article class="summary-grid__item reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/python.svg" alt="">
+                        <span>Python as the control language</span>
+                    </div>
+                    <p>The computer runs in a server-side GraalPy context with explicit host restrictions, which makes automation reproducible, network-aware, visible on linked screens, and isolated from host-level execution paths.</p>
+                </article>
+                <article class="summary-grid__item reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/builder.svg" alt="">
+                        <span>No-code for beginners</span>
+                    </div>
+                    <p>The builder generates real Python while staying readable as a flat block list. Templates, comparisons, direct Material I/O routes, and world checks already cover practical in-game use cases.</p>
+                </article>
+                <article class="summary-grid__item reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Cables first</span>
+                    </div>
+                    <p>Discovery, screen assignment, bus channels, and XLAPI bridges all rely on visible wiring in the world, so the logic remains physical and inspectable.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section feature-strip">
+            <div class="section-header reveal">
+                <div class="kicker">Fast entry points</div>
+                <h2>Four ways into the project.</h2>
+                <p>The site is intentionally split into focused sections so players, map makers, and future contributors can jump directly to the right layer.</p>
+            </div>
+            <div class="card-grid">
+                <article class="page-card reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/docs.svg" alt="">
+                        <span>Feature overview</span>
+                    </div>
+                    <p>From editor leases and recovery drafts to named screen targets, rich output, and XLAPI bridge policy.</p>
+                    <a class="inline-link" href="features.html">Open features</a>
+                </article>
+                <article class="page-card reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/python.svg" alt="">
+                        <span>Python guide</span>
+                    </div>
+                    <p>Hello World, repeat loops, device access, screen output, and practical sensor and redstone examples.</p>
+                    <a class="inline-link" href="python.html">Open Python guide</a>
+                </article>
+                <article class="page-card reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/builder.svg" alt="">
+                        <span>Block editor</span>
+                    </div>
+                    <p>Templates, logic blocks, else branches, world comparisons, and ready-made source-to-sink routes for players who do not want to type code by hand.</p>
+                    <a class="inline-link" href="builder.html">Open builder page</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Try the feel of it</div>
+                    <h2>A small XL Logic script</h2>
+                    <p>The mix of world status, device lookup, and visible output is the core feeling of the mod. That is why the front page should show a real script immediately.</p>
+                </div>
+                <div class="code-panel">
+                    <div class="code-panel__header">
+                        <strong>python / source_to_sink.py</strong>
+                        <button class="copy-code" type="button" data-copy-target="home-python-example">Copy</button>
+                    </div>
+                    <pre><code id="home-python-example">source = get_device("source_io")
+left_panel = get_device("left_panel")
+right_panel = get_device("right_panel")
+
+def tick():
+    moved = 0
+    if source is not None:
+        moved = source.transfer_item_to("sink_io", "south", "south", 0, 16)
+
+    if left_panel is not None:
+        left_panel.show("Route", {
+            "target": "sink_io",
+            "moved": moved,
+        })
+
+    if right_panel is not None and world.available():
+        right_panel.show("World", {
+            "day_time": world.day_time(),
+            "raining": world.is_raining(),
+        })
+
+yield from repeat(tick, 20)</code></pre>
+                </div>
+            </article>
+
+            <aside class="callout reveal" aria-label="XL Logic brand promise">
+                <div class="section-header">
+                    <div class="kicker">Brand promise</div>
+                    <h3>Fair on materials, deep on logic.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>The challenge should come from wiring and programming, not from excessive material grind.</li>
+                    <li>Every core system stays visible as an in-world block instead of disappearing into hidden configuration.</li>
+                    <li>Python and no-code do not compete with each other. They drive the same runtime, named endpoints, and screen output model.</li>
+                    <li>Multiplayer is part of the core promise: editor leases, read-only viewers, and recovery flows matter from day one.</li>
+                    <li>Scripts stay inside the XL Logic API surface. Host OS access, filesystem access, process launch, Java interop, and direct server admin commands are intentionally unavailable.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section doc-strip">
+            <div class="section-header reveal">
+                <div class="kicker">Go deeper</div>
+                <h2>From here into the details.</h2>
+                <p>Once the branding and landing page are in place, these are the next logical destinations for visitors.</p>
+            </div>
+            <div class="doc-grid">
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/computer.svg" alt="">
+                        <span>Blocks in detail</span>
+                    </div>
+                    <p>What block families exist, what is already implemented, and how they work together.</p>
+                    <a href="blocks.html">Open block overview</a>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/docs.svg" alt="">
+                        <span>Repository documents</span>
+                    </div>
+                    <p>Original sources like the roadmap, beginner guide, and status matrix remain linked and easy to reach.</p>
+                    <a href="docs.html">Open docs hub</a>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Features and architecture</span>
+                    </div>
+                    <p>Runtime, network model, named screens, Material I/O routing, multiplayer handling, and test coverage in a structured overview.</p>
+                    <a href="features.html">Read the architecture page</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic for Minecraft 1.21.1 | NeoForge 21.1.218 | Python + Builder</div>
+            <div class="footer-links">
+                <a href="features.html">Features</a>
+                <a href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

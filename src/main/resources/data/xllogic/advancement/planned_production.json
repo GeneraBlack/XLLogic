@@ -1,0 +1,32 @@
+{
+  "parent": "xllogic:wired_to_world",
+  "display": {
+    "icon": {
+      "item": "xllogic:crafting_cpu"
+    },
+    "title": {
+      "translate": "advancement.xllogic.planned_production.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.planned_production.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 6,
+    "y": 2
+  },
+  "criteria": {
+    "has_crafting_cpu": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:crafting_cpu"
+          }
+        ]
+      }
+    }
+  }
+}

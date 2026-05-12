@@ -1,0 +1,57 @@
+{
+  "textures": {
+    "particle": "xllogic:block/material_io_side",
+    "side": "xllogic:block/material_io_side",
+    "bottom": "xllogic:block/material_io_bottom",
+    "top": "xllogic:block/material_io_top",
+    "back": "xllogic:block/material_io_back",
+    "front": "xllogic:block/material_io_front"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 15],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "north": { "texture": "#back" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [3, 5, 15],
+      "to": [7, 11, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [9, 5, 15],
+      "to": [13, 11, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [7, 7, 15],
+      "to": [9, 9, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Material I/O Reference</title>
+    <meta name="description" content="Reference page for Material I/O: mode control, inventory and tank inspection, and direct endpoint-to-endpoint transfer commands.">
+    <link rel="icon" href="../assets/icons/computer.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Material I/O</h1>
+                <p>Material I/O is the inventory and fluid proxy block of XL Logic. It can inspect adjacent handlers per side and can move resources either inside the same block or directly into another named Material I/O endpoint.</p>
+                <div class="status-row">
+                    <span class="tag">Inventory + fluid endpoint</span>
+                    <span class="tag">Direct endpoint routing</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Mode and naming controls.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click opens endpoint naming.</li>
+                    <li>Shift-right-click cycles the mode between <code>items_only</code>, <code>fluids_only</code>, and <code>hybrid</code>.</li>
+                    <li>The state summary also reports whether item/fluid input and output are enabled.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Material I/O note about sides and targets">
+                <div class="section-header">
+                    <div class="kicker">Routing</div>
+                    <h3>Direct transfers need endpoint names.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Local side-to-side transfers use two side names on the same block.</li>
+                    <li>Endpoint-to-endpoint transfers use a target API name plus source and target side names.</li>
+                    <li>Transfer write operations obey remote-write policy when the device is bridged.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Python commands</div>
+                <h2>Inventory, tanks, and transfer operations.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>get_mode()</code> and <code>set_mode("items_only" | "fluids_only" | "hybrid")</code>.</li>
+                    <li><code>item_input_enabled()</code>, <code>set_item_input_enabled(enabled)</code>, <code>item_output_enabled()</code>, <code>set_item_output_enabled(enabled)</code>.</li>
+                    <li><code>fluid_input_enabled()</code>, <code>set_fluid_input_enabled(enabled)</code>, <code>fluid_output_enabled()</code>, <code>set_fluid_output_enabled(enabled)</code>.</li>
+                    <li><code>inventory_size(side)</code>, <code>stack(side, slot)</code>, and <code>inventory(side)</code> for item inspection.</li>
+                    <li><code>count_item(side, item_id)</code> for fast item counting.</li>
+                    <li><code>transfer_item(source_side, target_side, source_slot, amount)</code> for local item movement.</li>
+                    <li><code>transfer_item_to(target_api, source_side, target_side, source_slot, amount)</code> for direct item routing to another named Material I/O.</li>
+                    <li><code>tank_count(side)</code>, <code>tank(side, tank_index)</code>, and <code>tanks(side)</code> for fluid inspection.</li>
+                    <li><code>transfer_fluid(source_side, target_side, source_tank, amount)</code> and <code>transfer_fluid_to(target_api, source_side, target_side, source_tank, amount)</code> for fluid movement.</li>
+                    <li><code>side_aliases()</code>, <code>state()</code>, and <code>rename(name)</code>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="code-panel reveal">
+                <div class="code-panel__header">
+                    <strong>material_route.py</strong>
+                </div>
+                <pre><code>source = get_device("source_io")
+
+if source is not None:
+    screen.show("North inventory", {
+        "slots": source.inventory_size("north"),
+        "stacks": len(source.inventory("north")),
+    })
+    moved = source.transfer_item_to("sink_io", "south", "south", 0, 16)
+    screen.show("Transfer", {"moved": moved})</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Material I/O</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="crafting-io.html">Crafting I/O</a>
+                <a href="crafting-cpu.html">Crafting CPU</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

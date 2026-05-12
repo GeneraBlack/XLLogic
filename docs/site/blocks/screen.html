@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Screen Reference</title>
+    <meta name="description" content="Reference page for the XL Logic screen block: panel behavior, multiblock display rules, and screen-specific Python commands.">
+    <link rel="icon" href="../assets/icons/screen.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Screen</h1>
+                <p>The screen block is the visible output layer of XL Logic. It renders the last synchronized runtime snapshot of its linked computer and can also act as an individually named output target.</p>
+                <div class="status-row">
+                    <span class="tag">Display endpoint</span>
+                    <span class="tag">Named target capable</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>What the panel supports.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Discovery assigns screens over connected network cables. There is no separate manual link menu.</li>
+                    <li>Front-face clicks page through output, focus visible cards and tables, and navigate inside focused content.</li>
+                    <li>Shift-right-click on the non-front side opens endpoint naming for the controller screen.</li>
+                    <li>Adjacent screens with the same facing and linked computer merge into multiblock surfaces.</li>
+                    <li>If the controller chunk is missing, follower tiles report that instead of silently going blank.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Screen naming and scope">
+                <div class="section-header">
+                    <div class="kicker">Naming</div>
+                    <h3>One computer can target multiple panels.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Give a screen an endpoint name and fetch it through <code>get_device("left_panel")</code>.</li>
+                    <li>Screen output methods only work on screen endpoints.</li>
+                    <li>All screen writes are local-only and stay inside the same runtime/output model as the default screen object.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Python commands</div>
+                <h2>Screen-specific methods on a named screen endpoint.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>print(text, tone="info")</code>: alias for a simple line output.</li>
+                    <li><code>line(text, tone="info", channel="info")</code>: append a plain line entry.</li>
+                    <li><code>kv(title, fields, tone="info", channel="data", text="")</code>: write a key-value card.</li>
+                    <li><code>show(title, fields, tone="info", text="")</code>: shorter alias for key-value output.</li>
+                    <li><code>table(title, columns, rows, tone="info", channel="data", text="")</code>: write a structured table.</li>
+                    <li><code>plan_card(title, fields, tone="info", text="")</code>: write a structured plan card on the plan channel.</li>
+                    <li><code>clear_output()</code>: clear the dedicated target output stored on that screen endpoint.</li>
+                    <li><code>rename(name)</code>: rename the endpoint locally.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Common endpoint methods</div>
+                    <h2>Metadata available on the screen device too.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li><code>api_name()</code>, <code>name()</code>, <code>type()</code>, <code>position()</code>, and <code>distance()</code>.</li>
+                    <li><code>network_scope()</code>, <code>is_remote()</code>, <code>bridge_name()</code>, <code>bridge_group()</code>, <code>remote_policy()</code>, and <code>remote_writable()</code>.</li>
+                    <li><code>available()</code>, <code>summary()</code>, <code>describe()</code>, and <code>state()</code>.</li>
+                </ul>
+            </article>
+
+            <aside class="content-card reveal" aria-label="Screen example">
+                <div class="section-header">
+                    <div class="kicker">Example</div>
+                    <h2>Write to a dedicated panel</h2>
+                </div>
+                <div class="code-panel">
+                    <div class="code-panel__header">
+                        <strong>panel_output.py</strong>
+                    </div>
+                    <pre><code>left_panel = get_device("left_panel")
+
+if left_panel is not None:
+    left_panel.show("Route", {
+        "target": "sink_io",
+        "status": "running",
+    })
+    left_panel.table("Jobs", ["Task", "State"], [
+        ["smelt", "queued"],
+        ["sort", "idle"],
+    ])</code></pre>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Screen</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="computer.html">Computer</a>
+                <a href="../python.html">Python</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

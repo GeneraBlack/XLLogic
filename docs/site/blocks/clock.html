@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Clock Reference</title>
+    <meta name="description" content="Reference page for the clock block: in-game time summary, comparator output, and time-related Python methods.">
+    <link rel="icon" href="../assets/icons/screen.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Clock</h1>
+                <p>The clock block exposes both Minecraft time and wall-clock time. It is useful for schedules, day-phase displays, and scripts that should react to a specific world-time window.</p>
+                <div class="status-row">
+                    <span class="tag">Time endpoint</span>
+                    <span class="tag">Comparator output</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Time readout and analog output.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click prints endpoint name, in-game day time, real-world time, and a combined mode hint.</li>
+                    <li>The comparator output maps the 24000-tick Minecraft day onto 16 analog steps.</li>
+                    <li>Name tags can rename the endpoint for scripting.</li>
+                </ul>
+            </article>
+
+            <aside class="content-card reveal" aria-label="Clock Python methods">
+                <div class="section-header">
+                    <div class="kicker">Python commands</div>
+                    <h2>Time methods</h2>
+                </div>
+                <ul class="feature-list">
+                    <li><code>game_time()</code>: absolute server game time.</li>
+                    <li><code>day_time()</code>: current day-phase tick inside the 24000-tick cycle.</li>
+                    <li><code>real_time()</code>: formatted real-world timestamp string.</li>
+                    <li><code>state()</code>: common endpoint metadata plus the time fields.</li>
+                    <li><code>rename(name)</code>, <code>available()</code>, <code>summary()</code>, and <code>describe()</code>.</li>
+                </ul>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Clock</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="light-sensor.html">Light Sensor</a>
+                <a href="rain-sensor.html">Rain Sensor</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

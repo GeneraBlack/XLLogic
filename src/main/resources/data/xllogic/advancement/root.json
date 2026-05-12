@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "xllogic:network_cable"
+    },
+    "title": {
+      "translate": "advancement.xllogic.root.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.root.description"
+    },
+    "background": "minecraft:textures/block/black_wool.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_network_cable": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:network_cable"
+          }
+        ]
+      }
+    }
+  }
+}

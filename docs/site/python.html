@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Python Guide</title>
+    <meta name="description" content="Python onboarding for XL Logic with a sandboxed runtime, world API access, named screens, Material I/O routing, output helpers, and examples for loops, sensors, and redstone.">
+    <link rel="icon" href="assets/icons/python.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a class="is-active" href="python.html">Python</a>
+                <a href="builder.html">Builder</a>
+                <a href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Python Guide</div>
+                <h1>Write what should actually happen across the network.</h1>
+                <p>XL Logic uses Python as its in-game automation language. Scripts can read devices, feed shared or individually named screens, move items and fluids across Material I/O endpoints, react to world state, and keep running across repeated ticks without requiring external tooling before the player can experiment. The runtime is sandboxed, so Python executes against the XL Logic API surface rather than the host OS, JVM interop layer, or server console.</p>
+                <div class="status-row">
+                    <span class="tag">world</span>
+                    <span class="tag">screen</span>
+                    <span class="tag">network</span>
+                    <span class="tag tag--cold">devices</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Mental model</div>
+                    <h2>What an XL Logic computer really is.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>The computer executes Python on the server.</li>
+                    <li>The runtime only exposes exported XL Logic objects such as world, screen, network, devices, and output.</li>
+                    <li>world gives live data about dimension, time, weather, and moon phase.</li>
+                    <li>screen and output make results visible on both the computer and linked screen blocks, and named screens can be addressed individually.</li>
+                    <li>network and devices operate on the visible local cable segment.</li>
+                    <li>Long-running programs must yield between ticks.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Rule of thumb for long-running scripts">
+                <div class="section-header">
+                    <div class="kicker">Rule of thumb</div>
+                    <h3>If your script lives longer than one step, it needs to pause.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Inside manual loops: <span class="chip">yield from pause(1)</span></li>
+                    <li>For repeated work: <span class="chip">yield from repeat(step, 1)</span></li>
+                    <li>Without a yield, the watchdog will stop the program.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Safety model</div>
+                    <h2>Python can reach the game, not the host machine.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Scripts do not get direct access to the host OS, local files, spawned processes, threads, environment variables, or raw sockets.</li>
+                    <li>Java and polyglot imports are blocked, so Python cannot tunnel back into host APIs or JVM-side escape hatches.</li>
+                    <li>There is no direct scripting bridge for op, restart, shutdown, System.exit, or arbitrary server command dispatch.</li>
+                    <li>The intended path is the XL Logic runtime surface: world, screen, output, network, devices, Material I/O, crafting, and XLAPI helpers.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="What the XL Logic sandbox means in practice">
+                <div class="section-header">
+                    <div class="kicker">Practical effect</div>
+                    <h3>Think automation API, not general shell.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Read world and device state through the provided helpers instead of local files.</li>
+                    <li>Move items and fluids through endpoint functions such as transfer_item_to(...) and transfer_fluid_to(...).</li>
+                    <li>Show results on screen blocks or the computer output instead of writing to host resources.</li>
+                    <li>If you need remote data, use bridges and exposed runtime responses rather than host networking calls.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Quick start</div>
+                <h2>Three typical entry examples.</h2>
+                <p>These examples mirror the beginner guide and show the mod the way an actual player is likely to use it.</p>
+            </div>
+            <div class="example-grid">
+                <div class="code-panel reveal">
+                    <div class="code-panel__header">
+                        <strong>hello_world.py</strong>
+                        <button class="copy-code" type="button" data-copy-target="python-example-1">Copy</button>
+                    </div>
+                    <pre><code id="python-example-1">screen.print("Hello from XL Logic")
+
+screen.show("World", {
+    "day_time": world.day_time(),
+    "raining": world.is_raining(),
+})</code></pre>
+                </div>
+                <div class="code-panel reveal">
+                    <div class="code-panel__header">
+                        <strong>device_table.py</strong>
+                        <button class="copy-code" type="button" data-copy-target="python-example-2">Copy</button>
+                    </div>
+                    <pre><code id="python-example-2">rows = []
+for name in list_device_names():
+    current = device(name)
+    rows.append([
+        name,
+        current.type(),
+        current.network_scope(),
+        current.remote_policy(),
+    ])
+
+screen.table("Devices", ["API", "Type", "Scope", "Policy"], rows)</code></pre>
+                </div>
+                <div class="code-panel reveal">
+                    <div class="code-panel__header">
+                        <strong>rain_watch.py</strong>
+                        <button class="copy-code" type="button" data-copy-target="python-example-3">Copy</button>
+                    </div>
+                    <pre><code id="python-example-3">last_rain = None
+
+def tick():
+    global last_rain
+    raining = world.is_raining()
+    if raining != last_rain:
+        screen.print("Raining: " + str(raining))
+        last_rain = raining
+
+yield from repeat(tick, 20)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">API surfaces</div>
+                <h2>The most important objects available in the runtime.</h2>
+            </div>
+            <div class="spec-grid">
+                <article class="spec-card reveal">
+                    <h3>screen</h3>
+                    <p>For visible output in the editor and on linked screen blocks. Named screen devices expose the same show and table style helpers once you fetch them through get_device(name).</p>
+                    <ul class="spec-list">
+                        <li>screen.print(text)</li>
+                        <li>screen.show(title, fields)</li>
+                        <li>screen.table(title, columns, rows)</li>
+                        <li>screen.plan(title, fields)</li>
+                    </ul>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>network</h3>
+                    <p>A beginner layer for device lookup, without immediately dropping to the lower-level API.</p>
+                    <ul class="spec-list">
+                        <li>network.names()</li>
+                        <li>network.find(device_type)</li>
+                        <li>network.get(name)</li>
+                        <li>network.types()</li>
+                    </ul>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>world</h3>
+                    <p>Live world state straight from the server context.</p>
+                    <ul class="spec-list">
+                        <li>is_day(), is_night()</li>
+                        <li>is_raining(), rain_level()</li>
+                        <li>is_thundering(), moon_phase()</li>
+                        <li>day_time(), game_time(), real_time()</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Device example</div>
+                    <h2>Drive named screens and material flow directly from Python.</h2>
+                </div>
+                <div class="code-panel">
+                    <div class="code-panel__header">
+                        <strong>devices.py</strong>
+                        <button class="copy-code" type="button" data-copy-target="python-example-4">Copy</button>
+                    </div>
+                    <pre><code id="python-example-4">source = get_device("source_io")
+left_panel = get_device("left_panel")
+
+if source is not None:
+    moved = source.transfer_item_to("sink_io", "south", "south", 0, 16)
+    screen.show("Route", {
+        "source": "source_io",
+        "target": "sink_io",
+        "moved": moved,
+    })
+
+if left_panel is not None and world.available():
+    left_panel.show("World", {
+        "day_time": world.day_time(),
+        "raining": world.is_raining(),
+    })</code></pre>
+                </div>
+            </article>
+
+            <aside class="content-card reveal" aria-label="Note about the advanced Python API">
+                <div class="section-header">
+                    <div class="kicker">When to go deeper</div>
+                    <h2>Advanced API</h2>
+                </div>
+                <p>If you need get_device(...), named screen targets, transfer_item_to(...), transfer_fluid_to(...), output.table(...), bridge.request_runtime(...), or the crafting plan API, move from the beginner layer to the richer runtime API.</p>
+                <ul class="feature-list">
+                    <li>devices gives you real Python handles instead of plain metadata.</li>
+                    <li>Named screens support show, table, plan_card, and clear_output through get_device(name).</li>
+                    <li>Material I/O supports direct endpoint routing with transfer_item_to(...) and transfer_fluid_to(...).</li>
+                    <li>XLAPI responses for status, ping, devices, and runtime are structured.</li>
+                    <li>Crafting I/O and CPU expose previews, plans, and queue snapshots.</li>
+                </ul>
+                <a class="button button--ghost" href="docs.html">Open the original docs</a>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Python | Write, observe, and iterate directly in-game</div>
+            <div class="footer-links">
+                <a href="builder.html">Builder</a>
+                <a href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

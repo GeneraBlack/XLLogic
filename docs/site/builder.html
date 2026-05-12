@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Block Builder</title>
+    <meta name="description" content="No-code block builder for XL Logic with templates, guards, direct Material I/O routing, world comparisons, and Python generated behind the scenes.">
+    <link rel="icon" href="assets/icons/builder.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="python.html">Python</a>
+                <a class="is-active" href="builder.html">Builder</a>
+                <a href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">No-code builder</div>
+                <h1>For players who want logic without learning Python first.</h1>
+                <p>The builder is not a stripped-down side mode. It creates real programs, shares the same runtime as handwritten Python, and can drive the same devices, world-state conditions, and direct Material I/O routes.</p>
+                <div class="status-row">
+                    <span class="tag">Templates</span>
+                    <span class="tag">If / Else</span>
+                    <span class="tag">Direct routes</span>
+                    <span class="tag tag--warm">World state</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">How it works</div>
+                    <h2>Flat blocks, predictable behavior.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Each guard intentionally applies to the next block only.</li>
+                    <li>ELSE_NEXT is a flat marker, not a nested container.</li>
+                    <li>World comparisons, redstone checks, and amount checks remain visible as explicit block types.</li>
+                    <li>The output is still a readable Python script in the end.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Why the builder uses a flat list model">
+                <div class="section-header">
+                    <div class="kicker">Why this matters</div>
+                    <h3>Beginner-friendly without turning into a node maze.</h3>
+                </div>
+                <p>The builder deliberately stays readable as a list model. That makes it a better fit for an in-game UI and much easier to explain in documentation than a fully free-form nested node system.</p>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Templates</div>
+                <h2>Immediate entry points for common gameplay tasks.</h2>
+            </div>
+            <div class="stack-grid">
+                <article class="stack-card reveal">
+                    <h3>Discovery and display</h3>
+                    <p>Hello World, Device Tour, Live Clock, Stock Check, and Tank Watch give immediate visual feedback on the computer and linked screens.</p>
+                </article>
+                <article class="stack-card reveal">
+                    <h3>Weather and time</h3>
+                    <p>Rain Watch, Rain Lamp, Night Lamp, Thunder Alert, Heavy Rain Alert, and Evening Lights all react directly to world conditions.</p>
+                </article>
+                <article class="stack-card reveal">
+                    <h3>Automation</h3>
+                    <p>Source-&gt;Sink and Source Fluids start direct routing between named Material I/O devices, while comparisons for storage, fluids, and redstone make reactive programs possible without typing code by hand.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Builder examples</div>
+                <h2>What typical flows look like.</h2>
+            </div>
+            <div class="example-grid">
+                <div class="code-panel reveal">
+                    <div class="code-panel__header">
+                        <strong>Night Lamp</strong>
+                        <button class="copy-code" type="button" data-copy-target="builder-example-1">Copy</button>
+                    </div>
+                    <pre><code id="builder-example-1">IF world is night
+  THEN set redstone output north to 15
+ELSE
+  set redstone output north to 0
+SHOW "Night Lamp" with is_night and rain_level</code></pre>
+                </div>
+                <div class="code-panel reveal">
+                    <div class="code-panel__header">
+                        <strong>Source-&gt;Sink Items</strong>
+                        <button class="copy-code" type="button" data-copy-target="builder-example-2">Copy</button>
+                    </div>
+                    <pre><code id="builder-example-2">MOVE items
+  FROM source_io / south
+  TO sink_io / south
+  SLOT 0
+  AMOUNT 16
+REPEAT every 20 ticks</code></pre>
+                </div>
+                <div class="code-panel reveal">
+                    <div class="code-panel__header">
+                        <strong>Source Fluids</strong>
+                        <button class="copy-code" type="button" data-copy-target="builder-example-3">Copy</button>
+                    </div>
+                    <pre><code id="builder-example-3">MOVE fluid
+  FROM source_io / south
+  TO sink_io / south
+  TANK 0
+  AMOUNT 1000 mB
+REPEAT every 20 ticks</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Block categories</div>
+                <h2>What the builder already covers.</h2>
+            </div>
+            <div class="spec-grid">
+                <article class="spec-card reveal">
+                    <h3>Actions</h3>
+                    <ul class="spec-list">
+                        <li>Text output and structured displays</li>
+                        <li>Redstone writes</li>
+                        <li>Local and direct Material I/O routing</li>
+                        <li>World or device values shown on screen</li>
+                    </ul>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>Comparisons</h3>
+                    <ul class="spec-list">
+                        <li>Less than, greater than, equal to</li>
+                        <li>Item and fluid thresholds</li>
+                        <li>World time windows and rain strength</li>
+                    </ul>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>World conditions</h3>
+                    <ul class="spec-list">
+                        <li>Day or night</li>
+                        <li>Rain, thunder, and moon phase</li>
+                        <li>Dawn, evening, and custom time windows</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Why it matters for the website</div>
+                    <h2>The builder is its own selling point.</h2>
+                </div>
+                <p>Many Minecraft players want to build logic, but they do not want a mod that begins as pure code. The builder is the bridge between those audiences, and it now reaches practical source/sink automation instead of stopping at toy examples.</p>
+            </article>
+            <aside class="content-card reveal" aria-label="Possible future builder content for the website">
+                <div class="section-header">
+                    <div class="kicker">Natural next expansion</div>
+                    <h2>What could be added here later</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>A real screenshot sequence from the in-game UI</li>
+                    <li>A side-by-side builder to Python comparison</li>
+                    <li>A small template gallery with GIFs or still frames</li>
+                </ul>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Builder | No-code authoring for players who want in-game automation first</div>
+            <div class="footer-links">
+                <a href="python.html">Python</a>
+                <a href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

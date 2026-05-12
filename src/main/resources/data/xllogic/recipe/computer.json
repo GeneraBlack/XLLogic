@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:devices",
+  "pattern": [
+    "IGI",
+    "NRN",
+    "IBI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "B": {
+      "item": "xllogic:redstone_bus_cable"
+    }
+  },
+  "result": {
+    "id": "xllogic:computer",
+    "count": 1
+  }
+}

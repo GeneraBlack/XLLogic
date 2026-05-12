@@ -1,0 +1,32 @@
+{
+  "parent": "xllogic:signal_bus",
+  "display": {
+    "icon": {
+      "item": "xllogic:computer"
+    },
+    "title": {
+      "translate": "advancement.xllogic.hello_world.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.hello_world.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 4,
+    "y": 0
+  },
+  "criteria": {
+    "has_computer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:computer"
+          }
+        ]
+      }
+    }
+  }
+}

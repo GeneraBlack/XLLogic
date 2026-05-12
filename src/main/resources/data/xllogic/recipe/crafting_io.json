@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:crafting_blocks",
+  "pattern": [
+    " I ",
+    "MTN",
+    " C "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "xllogic:material_io"
+    },
+    "T": {
+      "item": "minecraft:crafting_table"
+    },
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "id": "xllogic:crafting_io",
+    "count": 1
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_panel"
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_panel",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_panel",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_panel",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "join_up": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_top"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "join_up": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_top",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "join_up": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_top",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "join_up": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_top",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "join_down": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_bottom"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "join_down": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_bottom",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "join_down": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_bottom",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "join_down": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_bottom",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "join_cw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_clockwise"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "join_cw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_clockwise",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "join_cw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_clockwise",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "join_cw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_clockwise",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_counter_clockwise"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_counter_clockwise",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_counter_clockwise",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_frame_counter_clockwise",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "join_up": "false",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_led_corner"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "join_up": "false",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_led_corner",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "join_up": "false",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_led_corner",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "join_up": "false",
+        "join_ccw": "false"
+      },
+      "apply": {
+        "model": "xllogic:block/screen_led_corner",
+        "y": 270
+      }
+    }
+  ]
+}

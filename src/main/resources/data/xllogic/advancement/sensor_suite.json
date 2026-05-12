@@ -1,0 +1,59 @@
+{
+  "parent": "xllogic:root",
+  "display": {
+    "icon": {
+      "item": "xllogic:light_sensor"
+    },
+    "title": {
+      "translate": "advancement.xllogic.sensor_suite.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.sensor_suite.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 2,
+    "y": 2
+  },
+  "criteria": {
+    "has_light_sensor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:light_sensor"
+          }
+        ]
+      }
+    },
+    "has_clock": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:clock"
+          }
+        ]
+      }
+    },
+    "has_rain_sensor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:rain_sensor"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_light_sensor",
+      "has_clock",
+      "has_rain_sensor"
+    ]
+  ]
+}

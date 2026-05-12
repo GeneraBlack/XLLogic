@@ -1,0 +1,42 @@
+{
+  "parent": "xllogic:world_display",
+  "display": {
+    "icon": {
+      "item": "xllogic:computer"
+    },
+    "title": {
+      "translate": "advancement.xllogic.control_room.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.control_room.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 8,
+    "y": -1
+  },
+  "criteria": {
+    "placed_computer": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "xllogic:computer"
+      }
+    },
+    "placed_screen": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "xllogic:screen"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "placed_computer"
+    ],
+    [
+      "placed_screen"
+    ]
+  ]
+}

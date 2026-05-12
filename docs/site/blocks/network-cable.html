@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Network Cable Reference</title>
+    <meta name="description" content="Reference page for the XL Logic network cable block: discovery behavior, segment rules, and debugging output.">
+    <link rel="icon" href="../assets/icons/network.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Network Cable</h1>
+                <p>Network cable defines the local discovery graph for computers, screens, and named endpoints. It is not a Python device itself, but it decides which devices a computer can see.</p>
+                <div class="status-row">
+                    <span class="tag">Network topology</span>
+                    <span class="tag">No direct Python device</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Discovery and diagnostics.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click prints a compact segment summary with cable count, computer count, endpoint count, XLAPI boundary count, unloaded frontier count, and endpoint type summary.</li>
+                    <li>Shift-right-click prints the full segment detail: computer positions, boundary hints, and every discovered endpoint summary.</li>
+                    <li>The cable connects to other network cables and to XL Logic device blocks.</li>
+                    <li>If multiple computers share the same local segment, the debug output warns about the conflict.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Network cable scripting note">
+                <div class="section-header">
+                    <div class="kicker">Python note</div>
+                    <h3>This block shapes visibility, not device commands.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>You do not call <code>get_device()</code> on a network cable.</li>
+                    <li>Its effect shows up indirectly through <code>network.names()</code>, <code>find_device(...)</code>, and the devices available to the computer block.</li>
+                    <li>Screens are assigned and endpoints become reachable only if the cable topology allows it.</li>
+                </ul>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Network Cable</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="computer.html">Computer</a>
+                <a href="xlapi-block.html">XLAPI</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

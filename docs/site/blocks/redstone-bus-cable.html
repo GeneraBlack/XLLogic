@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Redstone Bus Cable Reference</title>
+    <meta name="description" content="Reference page for the redstone bus cable: 16-channel transport, debug output, and route blockers.">
+    <link rel="icon" href="../assets/icons/network.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Redstone Bus Cable</h1>
+                <p>Redstone bus cable transports all 16 logical channels through one visible network. It is a topology block, not a Python endpoint, and its main interface is the in-game bus debugger.</p>
+                <div class="status-row">
+                    <span class="tag">16-channel transport</span>
+                    <span class="tag">No direct Python device</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Bus debugger behavior.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click prints the bus summary and one summary line for every active channel flow.</li>
+                    <li>Shift-right-click expands the view with route hops, blockers, and attached Redstone I/O device summaries.</li>
+                    <li>Topology changes notify neighboring bus networks so channel state stays synchronized.</li>
+                    <li>The block connects to other bus cables, coloured bus filters, and bus-aware Redstone I/O devices.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Bus cable scripting note">
+                <div class="section-header">
+                    <div class="kicker">Python note</div>
+                    <h3>Scripts see the bus through Redstone I/O.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>The cable itself has no endpoint name and no direct device handle.</li>
+                    <li>Channel assignment and channel readings are exposed through Redstone I/O methods such as <code>channel(side)</code> and <code>channels()</code>.</li>
+                </ul>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Redstone Bus Cable</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="redstone-io.html">Redstone I/O</a>
+                <a href="coloured-redstone-cable.html">Coloured Cable</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

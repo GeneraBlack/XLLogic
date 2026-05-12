@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "xllogic:white_redstone_cable",
+    "xllogic:orange_redstone_cable",
+    "xllogic:magenta_redstone_cable",
+    "xllogic:light_blue_redstone_cable",
+    "xllogic:yellow_redstone_cable",
+    "xllogic:lime_redstone_cable",
+    "xllogic:pink_redstone_cable",
+    "xllogic:gray_redstone_cable",
+    "xllogic:light_gray_redstone_cable",
+    "xllogic:cyan_redstone_cable",
+    "xllogic:purple_redstone_cable",
+    "xllogic:blue_redstone_cable",
+    "xllogic:brown_redstone_cable",
+    "xllogic:green_redstone_cable",
+    "xllogic:colored_redstone_cable",
+    "xllogic:black_redstone_cable"
+  ]
+}

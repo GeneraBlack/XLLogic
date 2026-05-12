@@ -1,0 +1,51 @@
+{
+  "parent": "xllogic:planned_production",
+  "display": {
+    "icon": {
+      "item": "xllogic:crafting_io"
+    },
+    "title": {
+      "translate": "advancement.xllogic.assembly_line.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.assembly_line.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 8,
+    "y": 2
+  },
+  "criteria": {
+    "placed_material_io": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "xllogic:material_io"
+      }
+    },
+    "placed_crafting_io": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "xllogic:crafting_io"
+      }
+    },
+    "placed_crafting_cpu": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "xllogic:crafting_cpu"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "placed_material_io"
+    ],
+    [
+      "placed_crafting_io"
+    ],
+    [
+      "placed_crafting_cpu"
+    ]
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "textures": {
+    "particle": "xllogic:block/xlapi_block_side",
+    "side": "xllogic:block/xlapi_block_side",
+    "bottom": "xllogic:block/xlapi_block_bottom",
+    "top": "xllogic:block/xlapi_block_top",
+    "back": "xllogic:block/xlapi_block_back",
+    "front": "xllogic:block/xlapi_block_front"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 15],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "north": { "texture": "#back" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [3, 3, 15],
+      "to": [6, 6, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [10, 3, 15],
+      "to": [13, 6, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [3, 10, 15],
+      "to": [6, 13, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [10, 10, 15],
+      "to": [13, 13, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [7, 7, 15],
+      "to": [9, 9, 16],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    }
+  ]
+}

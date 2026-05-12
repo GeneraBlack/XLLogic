@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Documentation Hub</title>
+    <meta name="description" content="Documentation hub for XL Logic with links to the README, roadmap, beginner guide, dedicated block reference pages, scenarios, and local website preview instructions.">
+    <link rel="icon" href="assets/icons/docs.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="python.html">Python</a>
+                <a href="builder.html">Builder</a>
+                <a href="blocks.html">Blocks</a>
+                <a class="is-active" href="docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Documentation hub</div>
+                <h1>The website is the front door. The repo stays the deep source.</h1>
+                <p>This page connects the homepage to the existing markdown documents in the project and to the dedicated block reference pages on the site itself. That keeps named screens, Material I/O routing, builder templates, runtime sandbox rules, and the deeper technical notes aligned instead of letting the site drift away from the repo docs.</p>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Source documents</div>
+                <h2>Jump directly into the existing project docs.</h2>
+            </div>
+            <div class="doc-grid">
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/docs.svg" alt="">
+                        <span>README</span>
+                    </div>
+                    <p>Project overview, toolchain, block families, in-game controls, and API surface.</p>
+                    <a href="../../README.md">Open README</a>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/python.svg" alt="">
+                        <span>Beginner Programming Guide</span>
+                    </div>
+                    <p>The first readable entry point for Python, named screens, Material I/O routes, builder helpers, repeated scripts, and the runtime safety boundary.</p>
+                    <a href="docs/BEGINNER_PROGRAMMING_GUIDE.md">Open guide</a>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/screen.svg" alt="">
+                        <span>Block Status Matrix</span>
+                    </div>
+                    <p>Status, priority, and next steps per block family.</p>
+                    <a href="docs/BLOCK_STATUS_MATRIX.md">Open matrix</a>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/docs.svg" alt="">
+                        <span>Roadmap</span>
+                    </div>
+                    <p>The larger work streams and their sequencing.</p>
+                    <a href="docs/ROADMAP.md">Open roadmap</a>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Network Scenarios</span>
+                    </div>
+                    <p>Reproducible in-game scenarios for discovery, segmentation, and cable topology.</p>
+                    <a href="docs/NETWORK_SCENARIOS.md">Open scenarios</a>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Bridge Policy Scenarios</span>
+                    </div>
+                    <p>Acceptance cases for XLAPI remote policy and structured bridge responses.</p>
+                    <a href="docs/BRIDGE_POLICY_SCENARIOS.md">Open bridge scenarios</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Block references</div>
+                <h2>Reach every block guide from the docs hub.</h2>
+                <p>The block overview remains the best entry point for browsing the full system, but the technical reference pages are now linked here as well so the docs hub can act as a real index for per-block behavior and Python commands.</p>
+            </div>
+            <div class="doc-grid">
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/computer.svg" alt="">
+                        <span>Overview and core runtime</span>
+                    </div>
+                    <p>Start with the block overview or jump directly into the computer and screen references.</p>
+                    <ul class="feature-list">
+                        <li><a href="blocks.html">Block overview</a></li>
+                        <li><a href="blocks/computer.html">Computer</a></li>
+                        <li><a href="blocks/screen.html">Screen</a></li>
+                    </ul>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Network and bridge blocks</span>
+                    </div>
+                    <p>Physical network topology, discovery behavior, cross-segment bridge rules, and display/debug surfaces.</p>
+                    <ul class="feature-list">
+                        <li><a href="blocks/network-cable.html">Network Cable</a></li>
+                        <li><a href="blocks/xlapi-block.html">XLAPI Block</a></li>
+                    </ul>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Redstone bus references</span>
+                    </div>
+                    <p>Endpoint I/O, bus tracing, and the filtered coloured-cable branch behavior.</p>
+                    <ul class="feature-list">
+                        <li><a href="blocks/redstone-io.html">Redstone I/O</a></li>
+                        <li><a href="blocks/redstone-bus-cable.html">Redstone Bus Cable</a></li>
+                        <li><a href="blocks/coloured-redstone-cable.html">Coloured Redstone Cable</a></li>
+                    </ul>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/screen.svg" alt="">
+                        <span>Sensor references</span>
+                    </div>
+                    <p>Environmental sampling blocks with comparator output and Python-visible state.</p>
+                    <ul class="feature-list">
+                        <li><a href="blocks/light-sensor.html">Light Sensor</a></li>
+                        <li><a href="blocks/clock.html">Clock</a></li>
+                        <li><a href="blocks/rain-sensor.html">Rain Sensor</a></li>
+                    </ul>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/computer.svg" alt="">
+                        <span>Material flow references</span>
+                    </div>
+                    <p>Inventory and fluid inspection, per-side I/O state, and direct endpoint-to-endpoint transfers.</p>
+                    <ul class="feature-list">
+                        <li><a href="blocks/material-io.html">Material I/O</a></li>
+                    </ul>
+                </article>
+                <article class="doc-card reveal">
+                    <div class="doc-card__icon">
+                        <img src="assets/icons/builder.svg" alt="">
+                        <span>Crafting references</span>
+                    </div>
+                    <p>Recipe-grid control, linked previews, queued plans, and Crafting CPU execution methods.</p>
+                    <ul class="feature-list">
+                        <li><a href="blocks/crafting-io.html">Crafting I/O</a></li>
+                        <li><a href="blocks/crafting-cpu.html">Crafting CPU</a></li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Local preview</div>
+                    <h2>View the homepage from inside the repository.</h2>
+                </div>
+                <div class="code-panel">
+                    <div class="code-panel__header">
+                        <strong>PowerShell</strong>
+                        <button class="copy-code" type="button" data-copy-target="docs-preview-command">Copy</button>
+                    </div>
+                    <pre><code id="docs-preview-command">Set-Location "D:\projekt\XLLogic"
+py -m http.server 4173 -d docs/site</code></pre>
+                </div>
+                <p>Then open <span class="chip">http://localhost:4173</span> in the browser. For a quick smoke test, opening <span class="chip">docs/site/index.html</span> directly also works.</p>
+            </article>
+
+            <aside class="callout reveal" aria-label="Purpose of the website compared to the repository docs">
+                <div class="section-header">
+                    <div class="kicker">Why this split exists</div>
+                    <h3>Branding front, not duplicate documentation.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>The website explains the project in a digestible form for new visitors.</li>
+                    <li>The markdown documents remain the deeper, repository-native source.</li>
+                    <li>That keeps architecture knowledge from being duplicated manually in two places.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Toolchain</div>
+                <h2>The technical base the site should communicate clearly.</h2>
+            </div>
+            <div class="spec-grid">
+                <article class="spec-card reveal">
+                    <h3>Minecraft</h3>
+                    <p>Target version 1.21.1 with NeoForge 21.1.218.</p>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>Runtime</h3>
+                    <p>Java 21 plus GraalPy for embedded Python execution inside a sandboxed host boundary.</p>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>Quality</h3>
+                    <p>JUnit and NeoForge GameTests cover runtime, network, named screen, Material I/O, and session flows.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Docs | Website and repository documents linked cleanly</div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="../../README.md">README</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

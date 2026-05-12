@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Computer Reference</title>
+    <meta name="description" content="Reference page for the XL Logic computer block: in-game controls, discovery behavior, runtime globals, and helper functions.">
+    <link rel="icon" href="../assets/icons/computer.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Computer</h1>
+                <p>The computer block is the runtime anchor of XL Logic. It owns the script, the session state, the discovery result, the synchronized output snapshot, and the server-side GraalPy execution context.</p>
+                <div class="status-row">
+                    <span class="tag">Core block</span>
+                    <span class="tag">Server-authoritative</span>
+                    <span class="status-badge status-badge--partial">Partially implemented</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="spec-grid">
+                <article class="spec-card reveal">
+                    <h3>Role</h3>
+                    <p>Owns the active script, runtime state, editor lease, recovery draft handling, and endpoint discovery for one local cable segment.</p>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>Python access</h3>
+                    <p>The computer is not fetched as a normal device. Instead it exposes globals such as computer, computer_api, world, screen, output, devices, and network.</p>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>Network rule</h3>
+                    <p>One local discovery segment may only contain one computer unless segments are separated by XLAPI blocks.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>What right click does.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click opens the bound computer screen with the current script, output history, and runtime snapshot.</li>
+                    <li>Shift-right-click refreshes discovery and prints a debug summary for the local segment.</li>
+                    <li>The discovery summary includes script length, network summary, runtime guardrails, cooldown state, editor lock state, boundary hints, linked screens, and discovered endpoints.</li>
+                    <li>If the segment contains multiple computers, discovery reports the conflict and tells you to split segments with XLAPI blocks.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Computer runtime notes">
+                <div class="section-header">
+                    <div class="kicker">Runtime model</div>
+                    <h3>Cooperative execution, not a free-running thread.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Scripts execute on the server and must yield between long-running steps.</li>
+                    <li>The runtime enforces statement, watchdog, stdout, stderr, and script-size guardrails.</li>
+                    <li>The sandbox blocks host OS access, filesystem access, process spawning, Java interop, and direct admin-command paths.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Python globals</div>
+                <h2>The computer block defines the main scripting surface.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>computer</code>: dictionary with name, position, and endpoint_count.</li>
+                    <li><code>computer_api</code>: helper object with <code>available()</code>, <code>name()</code>, <code>position()</code>, <code>endpoint_count()</code>, <code>network_summary()</code>, <code>list_devices()</code>, and <code>get_device(name)</code>.</li>
+                    <li><code>world</code>: world-time and weather API.</li>
+                    <li><code>screen</code> and <code>output</code>: write structured output to the computer and linked screens.</li>
+                    <li><code>devices</code> and <code>network</code>: live registry of discovered device endpoints on the local segment and across allowed bridges.</li>
+                    <li><code>endpoints</code>, <code>peripherals</code>, <code>endpoint_names</code>, and <code>device_names</code>: low-level endpoint metadata and stable lookup keys.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Helpers</div>
+                    <h2>Convenience functions you get automatically.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li><code>list_endpoints()</code> and <code>get_endpoint(name)</code> access raw endpoint bindings.</li>
+                    <li><code>list_devices()</code>, <code>get_device(name)</code>, <code>device(name)</code>, <code>require_device(name)</code>, <code>find_device(type)</code>, <code>list_device_names(type=None)</code>, and <code>devices_by_type(type)</code> work on the higher-level device registry.</li>
+                    <li><code>say(text)</code>, <code>show(title, fields)</code>, <code>show_kv(...)</code>, <code>show_table(...)</code>, and <code>show_plan_card(...)</code> write structured output.</li>
+                    <li><code>pause(ticks)</code>, <code>repeat(step, every_ticks)</code>, <code>sleep_ticks(ticks)</code>, and <code>run_loop(step, delay_ticks)</code> are the cooperative timing helpers.</li>
+                </ul>
+            </article>
+
+            <aside class="content-card reveal" aria-label="Computer example script">
+                <div class="section-header">
+                    <div class="kicker">Example</div>
+                    <h2>Minimal computer-oriented script</h2>
+                </div>
+                <div class="code-panel">
+                    <div class="code-panel__header">
+                        <strong>computer_overview.py</strong>
+                    </div>
+                    <pre><code>show_kv("Computer", {
+    "name": computer["name"],
+    "position": computer["position"],
+    "devices": len(list_devices()),
+    "network": computer_api.network_summary(),
+})
+
+yield from repeat(lambda: say("tick"), 20)</code></pre>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Computer</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="screen.html">Screen</a>
+                <a href="../python.html">Python</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

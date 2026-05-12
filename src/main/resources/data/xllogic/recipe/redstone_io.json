@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:io_blocks",
+  "pattern": [
+    "IPI",
+    "BNB",
+    "ITI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "minecraft:repeater"
+    },
+    "B": {
+      "item": "xllogic:redstone_bus_cable"
+    },
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "result": {
+    "id": "xllogic:redstone_io",
+    "count": 1
+  }
+}

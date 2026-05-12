@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Rain Sensor Reference</title>
+    <meta name="description" content="Reference page for the rain sensor block: weather sampling, comparator behavior, and rain-related Python methods.">
+    <link rel="icon" href="../assets/icons/screen.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Rain Sensor</h1>
+                <p>The rain sensor is the weather trigger block of XL Logic. It detects whether rain currently reaches the sensor position and exposes a simple boolean and analog view of that state.</p>
+                <div class="status-row">
+                    <span class="tag">Weather endpoint</span>
+                    <span class="tag">Comparator output</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Weather signal behavior.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click prints endpoint name and whether the block currently reads rain.</li>
+                    <li>The comparator output is 15 when it is raining and the sensor can see the sky; otherwise it is 0.</li>
+                    <li>Name tags can rename the endpoint for scripts.</li>
+                </ul>
+            </article>
+
+            <aside class="content-card reveal" aria-label="Rain sensor Python methods">
+                <div class="section-header">
+                    <div class="kicker">Python commands</div>
+                    <h2>Weather methods</h2>
+                </div>
+                <ul class="feature-list">
+                    <li><code>is_raining()</code>: boolean rain check at the sensor position.</li>
+                    <li><code>rain_level()</code>: 15 when raining, otherwise 0.</li>
+                    <li><code>state()</code>: common endpoint metadata plus rain fields.</li>
+                    <li><code>rename(name)</code>, <code>available()</code>, <code>summary()</code>, and <code>describe()</code>.</li>
+                </ul>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Rain Sensor</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="light-sensor.html">Light Sensor</a>
+                <a href="clock.html">Clock</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

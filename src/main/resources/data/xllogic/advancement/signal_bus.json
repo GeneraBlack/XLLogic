@@ -1,0 +1,32 @@
+{
+  "parent": "xllogic:root",
+  "display": {
+    "icon": {
+      "item": "xllogic:redstone_bus_cable"
+    },
+    "title": {
+      "translate": "advancement.xllogic.signal_bus.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.signal_bus.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 2,
+    "y": 0
+  },
+  "criteria": {
+    "has_redstone_bus_cable": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:redstone_bus_cable"
+          }
+        ]
+      }
+    }
+  }
+}

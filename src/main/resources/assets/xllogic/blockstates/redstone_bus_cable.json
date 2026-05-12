@@ -1,0 +1,33 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "xllogic:block/redstone_bus_cable_center"
+      }
+    },
+    {
+      "when": { "north": "true" },
+      "apply": { "model": "xllogic:block/redstone_bus_cable_arm" }
+    },
+    {
+      "when": { "east": "true" },
+      "apply": { "model": "xllogic:block/redstone_bus_cable_arm", "y": 90 }
+    },
+    {
+      "when": { "south": "true" },
+      "apply": { "model": "xllogic:block/redstone_bus_cable_arm", "y": 180 }
+    },
+    {
+      "when": { "west": "true" },
+      "apply": { "model": "xllogic:block/redstone_bus_cable_arm", "y": 270 }
+    },
+    {
+      "when": { "up": "true" },
+      "apply": { "model": "xllogic:block/redstone_bus_cable_arm", "x": 270 }
+    },
+    {
+      "when": { "down": "true" },
+      "apply": { "model": "xllogic:block/redstone_bus_cable_arm", "x": 90 }
+    }
+  ]
+}

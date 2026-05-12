@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Block Overview</title>
+    <meta name="description" content="Block overview for XL Logic, including computers, named screens, cables, sensors, Material I/O routing, XLAPI bridges, and crafting blocks.">
+    <link rel="icon" href="assets/icons/screen.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="python.html">Python</a>
+                <a href="builder.html">Builder</a>
+                <a class="is-active" href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block overview</div>
+                <h1>The building pieces behind the XL Logic system.</h1>
+                <p>The mod works because its systems stay visible as real block families in the world. This page explains the role of each family, links to a dedicated reference page for each block group, and shows how far each part already goes in the current prototype.</p>
+                <div class="status-row">
+                    <span class="status-badge">Complete in the current scope</span>
+                    <span class="status-badge status-badge--partial">Partially implemented</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Filter</div>
+                <h2>Browse block families by responsibility.</h2>
+            </div>
+            <div class="filter-bar reveal" aria-label="Block filter">
+                <button class="filter-button is-active" type="button" data-filter="all">All</button>
+                <button class="filter-button" type="button" data-filter="core">Core</button>
+                <button class="filter-button" type="button" data-filter="network">Network</button>
+                <button class="filter-button" type="button" data-filter="sensing">Sensing</button>
+                <button class="filter-button" type="button" data-filter="automation">Automation</button>
+                <button class="filter-button" type="button" data-filter="bridge">Bridge</button>
+            </div>
+            <div class="block-grid">
+                <article class="block-card reveal" data-category="core automation">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/computer.svg" alt="">
+                        <span>Computer</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Core</span>
+                        <span class="status-badge status-badge--partial">Partially implemented</span>
+                    </div>
+                    <p>The main entry point for Python, builder workflows, runtime state, session leases, recovery drafts, and server-side script execution.</p>
+                    <a class="inline-link" href="blocks/computer.html">Open computer reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="core">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/screen.svg" alt="">
+                        <span>Screen</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag tag--cold">Display</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Front-facing rich output with status LEDs, paging, focus mode, automatic multiblock surfaces per target computer, and individually named panels that one computer can address separately.</p>
+                    <a class="inline-link" href="blocks/screen.html">Open screen reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="network">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Network Cable</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Network</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Visible local connection medium for discovery, screens, and device access. Cable topology is part of the actual design language.</p>
+                    <a class="inline-link" href="blocks/network-cable.html">Open network cable reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="bridge network">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>XLAPI Block</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag tag--cold">Bridge</span>
+                        <span class="status-badge status-badge--partial">Partially implemented</span>
+                    </div>
+                    <p>Segment boundary and controlled bridge for remote devices, status requests, ping, device listings, runtime snapshots, and mailbox messages.</p>
+                    <a class="inline-link" href="blocks/xlapi-block.html">Open XLAPI reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="network automation">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Redstone I/O</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Signal</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Reads signals per side and writes them back in output mode. It ties directly into bus channels and builder actions.</p>
+                    <a class="inline-link" href="blocks/redstone-io.html">Open redstone I/O reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="network">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Redstone Bus Cable</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">16 channels</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Transports all 16 bus channels and exposes producers, consumers, and blocking points in its debug output.</p>
+                    <a class="inline-link" href="blocks/redstone-bus-cable.html">Open bus cable reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="network">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/network.svg" alt="">
+                        <span>Coloured Redstone Cable</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Filter</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Passes exactly one channel onward and makes separated branches in the bus network easier to reason about.</p>
+                    <a class="inline-link" href="blocks/coloured-redstone-cable.html">Open coloured cable reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="sensing">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/screen.svg" alt="">
+                        <span>Light Sensor</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Sensor</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Provides light levels through both comparator output and the device API. A strong starting point for reactive builder or Python logic.</p>
+                    <a class="inline-link" href="blocks/light-sensor.html">Open light sensor reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="sensing">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/screen.svg" alt="">
+                        <span>Clock</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Time</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Exposes day time, game time, and real time for displays, time windows, and periodic automation.</p>
+                    <a class="inline-link" href="blocks/clock.html">Open clock reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="sensing">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/screen.svg" alt="">
+                        <span>Rain Sensor</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Weather</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Reports rain state and rain strength. It is the basis for Rain Watch, Heavy Rain Alert, and weather-aware logic.</p>
+                    <a class="inline-link" href="blocks/rain-sensor.html">Open rain sensor reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="automation">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/computer.svg" alt="">
+                        <span>Material I/O</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Inventory + fluid</span>
+                        <span class="status-badge">Complete</span>
+                    </div>
+                    <p>Proxy for adjacent inventories and tanks. Python can inspect contents and move items or fluids between local sides or directly into another named Material I/O endpoint.</p>
+                    <a class="inline-link" href="blocks/material-io.html">Open Material I/O reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="automation">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/builder.svg" alt="">
+                        <span>Crafting I/O</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Planning</span>
+                        <span class="status-badge status-badge--partial">Partially implemented</span>
+                    </div>
+                    <p>Recipe frontend with larger grids, CPU linking, routes, plan queues, resume behavior, reservation mode, and structured job snapshots.</p>
+                    <a class="inline-link" href="blocks/crafting-io.html">Open Crafting I/O reference</a>
+                </article>
+
+                <article class="block-card reveal" data-category="automation">
+                    <div class="block-card__icon">
+                        <img src="assets/icons/builder.svg" alt="">
+                        <span>Crafting CPU</span>
+                    </div>
+                    <div class="block-card__meta">
+                        <span class="tag">Execution</span>
+                        <span class="status-badge status-badge--partial">Partially implemented</span>
+                    </div>
+                    <p>Crafts against adjacent inventories, exposes previews, and provides the runtime base for larger planned production chains.</p>
+                    <a class="inline-link" href="blocks/crafting-cpu.html">Open Crafting CPU reference</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">How they fit together</div>
+                    <h2>The relationship between the block families.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Computer plus Network Cable form the local control segment.</li>
+                    <li>Screens show the last synchronized runtime output of that same computer and can also be split into individually named target panels.</li>
+                    <li>Sensors and Redstone I/O provide the reactive input layer.</li>
+                    <li>Material I/O and crafting components form the productive output side, including direct source-to-sink routes.</li>
+                    <li>XLAPI extends the whole system beyond one segment when the bridge layer grows further.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Note about the block status matrix">
+                <div class="section-header">
+                    <div class="kicker">Source of truth</div>
+                    <h3>This page summarizes the block matrix.</h3>
+                </div>
+                <p>The current status still comes from the block status matrix in the repo. For the website, this is the more readable layer, while the matrix remains the deeper technical source.</p>
+                <a class="button button--ghost" href="docs/BLOCK_STATUS_MATRIX.md">Open the block status matrix</a>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Blocks | From core systems to production chains</div>
+            <div class="footer-links">
+                <a href="features.html">Features</a>
+                <a href="builder.html">Builder</a>
+                <a href="docs.html">Docs</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

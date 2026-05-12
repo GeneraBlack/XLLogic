@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:sensors",
+  "pattern": [
+    " B ",
+    " C ",
+    "NR "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:light_blue_dye"
+    },
+    "C": {
+      "item": "minecraft:cauldron"
+    },
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "id": "xllogic:rain_sensor",
+    "count": 1
+  }
+}

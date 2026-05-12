@@ -1,0 +1,35 @@
+{
+  "parent": "xllogic:control_room",
+  "display": {
+    "icon": {
+      "item": "xllogic:screen"
+    },
+    "title": {
+      "translate": "advancement.xllogic.monitor_wall.title"
+    },
+    "description": {
+      "translate": "advancement.xllogic.monitor_wall.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 10,
+    "y": -1
+  },
+  "criteria": {
+    "has_four_screens": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "xllogic:screen",
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=south": { "model": "xllogic:block/rain_sensor" },
+    "facing=west": { "model": "xllogic:block/rain_sensor", "y": 90 },
+    "facing=north": { "model": "xllogic:block/rain_sensor", "y": 180 },
+    "facing=east": { "model": "xllogic:block/rain_sensor", "y": 270 }
+  }
+}

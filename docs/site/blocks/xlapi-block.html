@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | XLAPI Block Reference</title>
+    <meta name="description" content="Reference page for the XLAPI block: bridge state, remote-computer discovery, message passing, and runtime queries.">
+    <link rel="icon" href="../assets/icons/network.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>XLAPI Block</h1>
+                <p>The XLAPI block splits local computer segments and can relay structured bridge traffic between compatible remote segments. It is the block that turns one local system into a cross-segment network.</p>
+                <div class="status-row">
+                    <span class="tag">Bridge endpoint</span>
+                    <span class="tag">Structured remote queries</span>
+                    <span class="status-badge status-badge--partial">Partially implemented</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Relay and group controls.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click toggles relay mode and prints the current bridge state.</li>
+                    <li>Shift-right-click cycles the uplink group from 0 to 15.</li>
+                    <li>Name tags can rename the endpoint like other named device blocks.</li>
+                    <li>The block acts as a segment boundary in local discovery even when you use it only as a separator.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="XLAPI safety note">
+                <div class="section-header">
+                    <div class="kicker">Scope</div>
+                    <h3>Remote access stays structured.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Bridge traffic is limited to structured mailbox-style messages and built-in commands.</li>
+                    <li>Supported command families are <code>status</code>, <code>ping</code>, <code>devices</code>, and <code>runtime</code>.</li>
+                    <li>Bridge configuration remains local; remote mutation paths are intentionally conservative.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Python commands</div>
+                <h2>Bridge-specific methods on an XLAPI endpoint.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>uplink_group()</code> and <code>set_uplink_group(group)</code>: read or change the bridge group. Group changes are local-only.</li>
+                    <li><code>relay_enabled()</code> and <code>set_relay_enabled(enabled)</code>: read or change relay state. Relay changes are local-only.</li>
+                    <li><code>forwarded_messages()</code>: total count of forwarded bridge messages.</li>
+                    <li><code>remote_computers()</code>: list remote computer snapshots reachable through this bridge.</li>
+                    <li><code>peek_messages(limit=16)</code> and <code>poll_messages(limit=16)</code>: inspect or drain bridge mailbox messages.</li>
+                    <li><code>send_message(message, channel="default", target="")</code>: send a raw message to all or one remote computer.</li>
+                    <li><code>send_command(command, payload="", target="")</code>: send a structured bridge command and receive response metadata.</li>
+                    <li><code>request_status(target="")</code>, <code>ping(payload="ping", target="")</code>, <code>request_devices(target="")</code>, and <code>request_runtime(target="", output_limit=8, plan_limit=6)</code>: convenience wrappers around the built-in bridge commands.</li>
+                    <li><code>peek_responses(limit=16)</code> and <code>poll_responses(limit=16)</code>: inspect or drain structured bridge responses.</li>
+                    <li><code>state()</code>: returns bridge metadata including uplink group, relay state, forwarded message count, reachable remote computers, and inbox count.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Common endpoint methods</div>
+                    <h2>Also available on XLAPI devices.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li><code>rename(name)</code>, <code>available()</code>, <code>summary()</code>, and <code>describe()</code>.</li>
+                    <li><code>api_name()</code>, <code>name()</code>, <code>type()</code>, <code>position()</code>, <code>distance()</code>, and network/bridge metadata helpers.</li>
+                </ul>
+            </article>
+
+            <aside class="content-card reveal" aria-label="XLAPI example">
+                <div class="section-header">
+                    <div class="kicker">Example</div>
+                    <h2>Ask a remote computer for runtime data</h2>
+                </div>
+                <div class="code-panel">
+                    <div class="code-panel__header">
+                        <strong>bridge_runtime.py</strong>
+                    </div>
+                    <pre><code>bridge = get_device("xlapi_block")
+
+if bridge is not None:
+    request = bridge.request_runtime(output_limit=4, plan_limit=2)
+    screen.show("Bridge", request)
+    for response in bridge.poll_responses():
+        screen.print("response: " + str(response))</code></pre>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | XLAPI Block</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="network-cable.html">Network Cable</a>
+                <a href="computer.html">Computer</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Crafting CPU Reference</title>
+    <meta name="description" content="Reference page for the Crafting CPU: recipe slots, preview calls, queued jobs, and craft execution methods.">
+    <link rel="icon" href="../assets/icons/builder.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Crafting CPU</h1>
+                <p>The Crafting CPU is the execution block behind Crafting I/O. It stores the active 3x3 recipe pattern, exposes preview information, and crafts against adjacent input and output handlers.</p>
+                <div class="status-row">
+                    <span class="tag">Craft execution endpoint</span>
+                    <span class="tag">Recipe preview</span>
+                    <span class="status-badge status-badge--partial">Partially implemented</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Busy flag and naming.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click opens endpoint naming.</li>
+                    <li>Shift-right-click toggles the busy flag and prints the current CPU state summary.</li>
+                    <li>Name tags also rename the endpoint locally.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Crafting CPU note about handlers">
+                <div class="section-header">
+                    <div class="kicker">Sides</div>
+                    <h3>Craft execution is side-based.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li><code>craft(...)</code> and <code>craft_queued(...)</code> need an input side and an output side on the CPU block.</li>
+                    <li>Side aliases are available through <code>side_aliases()</code> and are reflected in <code>state()</code>.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Python commands</div>
+                <h2>Recipe and execution methods.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>recipe_slot_count()</code>, <code>recipe_slot(slot)</code>, and <code>recipe()</code>.</li>
+                    <li><code>set_recipe_slot(slot, item_id, count)</code> and <code>clear_recipe()</code>.</li>
+                    <li><code>preview()</code>: structured preview with recipe id, result item, and result count.</li>
+                    <li><code>craft(input_side, output_side, crafts)</code>: perform immediate crafting through the adjacent handlers on those sides.</li>
+                    <li><code>craft_queued(input_side, output_side)</code>: execute queued work on the CPU itself.</li>
+                    <li><code>is_busy()</code> and <code>set_busy(busy)</code>.</li>
+                    <li><code>queued_jobs()</code> and <code>set_queued_jobs(count)</code>.</li>
+                    <li><code>side_aliases()</code>, <code>state()</code>, and <code>rename(name)</code>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="code-panel reveal">
+                <div class="code-panel__header">
+                    <strong>crafting_cpu.py</strong>
+                </div>
+                <pre><code>cpu = get_device("crafting_cpu")
+
+if cpu is not None:
+    cpu.set_recipe_slot(0, "minecraft:oak_planks", 1)
+    cpu.set_recipe_slot(1, "minecraft:oak_planks", 1)
+    cpu.set_recipe_slot(3, "minecraft:oak_planks", 1)
+    cpu.set_recipe_slot(4, "minecraft:oak_planks", 1)
+    screen.show("Preview", cpu.preview())
+    crafted = cpu.craft("west", "east", 1)
+    screen.show("Craft", {"crafted": crafted})</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Crafting CPU</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="crafting-io.html">Crafting I/O</a>
+                <a href="material-io.html">Material I/O</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

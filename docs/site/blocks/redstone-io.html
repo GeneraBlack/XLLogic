@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Redstone I/O Reference</title>
+    <meta name="description" content="Reference page for Redstone I/O: side reads, writes, bus channels, and redstone-specific Python commands.">
+    <link rel="icon" href="../assets/icons/network.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Redstone I/O</h1>
+                <p>Redstone I/O is the programmable signal edge of XL Logic. It samples per-side redstone levels, can drive output levels, and participates in the 16-channel bus network.</p>
+                <div class="status-row">
+                    <span class="tag">Signal endpoint</span>
+                    <span class="tag">Bus aware</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Local controls and redstone behavior.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click captures current inputs and opens endpoint naming.</li>
+                    <li>Shift-right-click cycles the mode between <code>input</code> and <code>output</code>.</li>
+                    <li>Neighbor changes resample input levels automatically.</li>
+                    <li>The block emits analog output based on its current per-side output state.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Redstone I/O note about sides">
+                <div class="section-header">
+                    <div class="kicker">Sides</div>
+                    <h3>Most commands are side-based.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Valid side names follow the usual XL Logic side set: down, up, north, south, west, east.</li>
+                    <li>Named side aliases also appear through <code>side_aliases()</code> and are reflected in <code>state()</code>.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Python commands</div>
+                <h2>Everything the redstone device exports.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>get_mode()</code> and <code>set_mode("input" | "output")</code>.</li>
+                    <li><code>read(side)</code>: read the current redstone level on one side.</li>
+                    <li><code>write(side, level)</code>: set an output level from 0 to 15 on one side.</li>
+                    <li><code>channel(side)</code> and <code>set_channel(side, channel)</code>: read or write the bus channel for one side.</li>
+                    <li><code>levels()</code>: dictionary of all current side levels.</li>
+                    <li><code>channels()</code>: dictionary of all current side channels.</li>
+                    <li><code>side_aliases()</code> and <code>state()</code>: structured side-name and runtime summary helpers.</li>
+                    <li><code>rename(name)</code>: rename the endpoint locally.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="code-panel reveal">
+                <div class="code-panel__header">
+                    <strong>redstone_gate.py</strong>
+                </div>
+                <pre><code>redstone = get_device("redstone_io")
+
+if redstone is not None:
+    redstone.set_mode("output")
+    north = redstone.read("north")
+    redstone.write("south", 15 if north &gt;= 8 else 0)
+    screen.show("Bus", redstone.channels())</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Redstone I/O</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="redstone-bus-cable.html">Bus Cable</a>
+                <a href="coloured-redstone-cable.html">Coloured Cable</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

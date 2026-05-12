@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Crafting I/O Reference</title>
+    <meta name="description" content="Reference page for Crafting I/O: grid control, routes, linked CPU preview, plan editing, and queued-plan execution.">
+    <link rel="icon" href="../assets/icons/builder.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Crafting I/O</h1>
+                <p>Crafting I/O is the planning and recipe-frontend block. It stores the visible recipe grid, links to a Crafting CPU, binds named Material I/O routes, and can execute either a simple linked craft or a queued multi-step plan.</p>
+                <div class="status-row">
+                    <span class="tag">Craft planning endpoint</span>
+                    <span class="tag">Queued plan capable</span>
+                    <span class="status-badge status-badge--partial">Partially implemented</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>Grid-size and state controls.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click prints the full Crafting I/O state summary.</li>
+                    <li>Shift-right-click cycles the grid size. The current implementation supports 3x3, 5x5, and 7x7.</li>
+                    <li>Name tags rename the endpoint for route and CPU linking.</li>
+                </ul>
+            </article>
+
+            <aside class="callout reveal" aria-label="Crafting I/O note about routes">
+                <div class="section-header">
+                    <div class="kicker">Routes</div>
+                    <h3>Named routes point at Material I/O endpoints.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>Routes are stored by name and target a named Material I/O plus one side.</li>
+                    <li>Plan steps can reference an input route and an output route independently.</li>
+                    <li>The linked CPU, material input endpoint, and material output endpoint are configured separately from named routes.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Grid and route commands</div>
+                <h2>Configure the recipe frontend.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>grid_width()</code>, <code>grid_height()</code>, <code>set_grid_size(size)</code>, <code>grid_slot_count()</code>.</li>
+                    <li><code>grid_slot(slot)</code>, <code>grid()</code>, <code>set_grid_slot(slot, item_id, count)</code>, and <code>clear_grid()</code>.</li>
+                    <li><code>route_count()</code>, <code>route(index)</code>, <code>routes()</code>, <code>set_route(route_name, endpoint_api, side)</code>, <code>clear_route(route_name)</code>, and <code>clear_routes()</code>.</li>
+                    <li><code>window_origin()</code> and <code>set_window_origin(x, y)</code> control the active 3x3 recipe window inside a larger grid.</li>
+                    <li><code>linked_cpu()</code>, <code>set_linked_cpu(api_name)</code>, <code>material_input_device()</code>, <code>set_material_input_device(api_name)</code>, <code>material_input_side()</code>, <code>set_material_input_side(side)</code>, <code>material_output_device()</code>, <code>set_material_output_device(api_name)</code>, <code>material_output_side()</code>, and <code>set_material_output_side(side)</code>.</li>
+                    <li><code>apply_recipe_window()</code> pushes the active recipe window into the linked Crafting CPU.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Preview and plan commands</div>
+                <h2>Inspect and edit craft plans.</h2>
+            </div>
+            <div class="content-card reveal">
+                <ul class="feature-list">
+                    <li><code>linked_preview()</code>: preview of the linked CPU result for the current window.</li>
+                    <li><code>craft_linked(crafts)</code>: execute the linked recipe directly through the linked CPU and material endpoints.</li>
+                    <li><code>plan_step_count()</code>, <code>plan_step(index)</code>, and <code>plan()</code> inspect the current plan.</li>
+                    <li><code>append_plan_step(x, y, crafts[, input_route, output_route])</code>, <code>set_plan_step(index, x, y, crafts[, input_route, output_route])</code>, <code>remove_plan_step(index)</code>, <code>clear_plan()</code>, and <code>rebuild_plan()</code>.</li>
+                    <li><code>craft_plan(cycles)</code>: execute the current plan directly.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Queued plan commands</div>
+                    <h2>Queue, resume, abort, and inspect long jobs.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li><code>queued_plan_cycles()</code>, <code>set_queued_plan_cycles(cycles)</code>, and <code>queue_plan(cycles)</code>.</li>
+                    <li><code>can_resume_queued_plan()</code>, <code>resume_queued_plan()</code>, <code>can_abort_queued_plan()</code>, <code>abort_queued_plan()</code>, and <code>clear_queued_plan()</code>.</li>
+                    <li><code>queued_plan_reservation_mode()</code> and <code>set_queued_plan_reservation_mode("full_queue" | "active_cycle")</code>.</li>
+                    <li><code>craft_queued_plan()</code>: continue executing the queued plan until blocked, failed, or completed.</li>
+                    <li><code>queued_plan()</code>: structured job snapshot including queue state, reservation mode, action hints, blocker metadata, resume/abort flags, and tracked intermediate details.</li>
+                </ul>
+            </article>
+
+            <aside class="content-card reveal" aria-label="Crafting I/O example">
+                <div class="section-header">
+                    <div class="kicker">Example</div>
+                    <h2>Linked preview plus queued plan setup</h2>
+                </div>
+                <div class="code-panel">
+                    <div class="code-panel__header">
+                        <strong>crafting_frontend.py</strong>
+                    </div>
+                    <pre><code>crafting = get_device("crafting_io")
+
+if crafting is not None:
+    crafting.set_linked_cpu("crafting_cpu")
+    crafting.set_route("buffer_in", "material_io", "north")
+    crafting.set_route("buffer_out", "material_io", "south")
+    crafting.set_grid_slot(0, "minecraft:oak_planks", 1)
+    crafting.set_grid_slot(1, "minecraft:oak_planks", 1)
+    crafting.set_grid_slot(5, "minecraft:oak_planks", 1)
+    crafting.set_grid_slot(6, "minecraft:oak_planks", 1)
+    screen.show("Linked preview", crafting.linked_preview())
+    crafting.rebuild_plan()
+    crafting.set_queued_plan_cycles(4)</code></pre>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Crafting I/O</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="crafting-cpu.html">Crafting CPU</a>
+                <a href="material-io.html">Material I/O</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

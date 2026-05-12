@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:devices",
+  "pattern": [
+    " E ",
+    "NCN",
+    " R "
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "C": {
+      "item": "xllogic:computer"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "id": "xllogic:xlapi_block",
+    "count": 1
+  }
+}

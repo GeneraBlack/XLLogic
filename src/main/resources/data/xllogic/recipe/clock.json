@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:sensors",
+  "pattern": [
+    " N ",
+    " C ",
+    " R "
+  ],
+  "key": {
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "C": {
+      "item": "minecraft:clock"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "id": "xllogic:clock",
+    "count": 1
+  }
+}

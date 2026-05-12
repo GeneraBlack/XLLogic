@@ -1,0 +1,48 @@
+{
+  "textures": {
+    "particle": "xllogic:block/rain_sensor_side",
+    "side": "xllogic:block/rain_sensor_side",
+    "bottom": "xllogic:block/rain_sensor_bottom",
+    "top": "xllogic:block/rain_sensor_top",
+    "back": "xllogic:block/rain_sensor_back",
+    "front": "xllogic:block/rain_sensor_front"
+  },
+  "elements": [
+    {
+      "from": [2, 0, 1],
+      "to": [14, 4, 13],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "north": { "texture": "#back" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [4, 4, 3],
+      "to": [12, 9, 11],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "north": { "texture": "#back" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    },
+    {
+      "from": [5, 9, 5],
+      "to": [11, 12, 9],
+      "faces": {
+        "down": { "texture": "#bottom" },
+        "up": { "texture": "#top" },
+        "north": { "texture": "#back" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#side" },
+        "east": { "texture": "#side" }
+      }
+    }
+  ]
+}

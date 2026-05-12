@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Light Sensor Reference</title>
+    <meta name="description" content="Reference page for the light sensor block: comparator behavior and light-sampling Python methods.">
+    <link rel="icon" href="../assets/icons/screen.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="../index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="../assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../python.html">Python</a>
+                <a href="../builder.html">Builder</a>
+                <a class="is-active" href="../blocks.html">Blocks</a>
+                <a href="../docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Block reference</div>
+                <h1>Light Sensor</h1>
+                <p>The light sensor is the simplest environmental input block in XL Logic. It reads the local brightness level and exposes the same number both to comparators and to Python.</p>
+                <div class="status-row">
+                    <span class="tag">Sensor endpoint</span>
+                    <span class="tag">Comparator output</span>
+                    <span class="status-badge">Complete</span>
+                </div>
+                <a class="button button--ghost" href="../blocks.html">Back to block overview</a>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">In game</div>
+                    <h2>What the sensor reports.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>Right click prints the endpoint name and the sampled light level.</li>
+                    <li>The comparator output is the same light level clamped to 0 through 15.</li>
+                    <li>Name tags can rename the endpoint for Python lookup.</li>
+                </ul>
+            </article>
+
+            <aside class="content-card reveal" aria-label="Light sensor Python methods">
+                <div class="section-header">
+                    <div class="kicker">Python commands</div>
+                    <h2>Minimal and direct.</h2>
+                </div>
+                <ul class="feature-list">
+                    <li><code>light_level()</code>: returns the current local raw brightness from 0 to 15.</li>
+                    <li><code>state()</code>: common endpoint metadata plus the current light level.</li>
+                    <li><code>rename(name)</code>, <code>available()</code>, <code>summary()</code>, and <code>describe()</code>.</li>
+                </ul>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Block Reference | Light Sensor</div>
+            <div class="footer-links">
+                <a href="../blocks.html">Blocks</a>
+                <a href="rain-sensor.html">Rain Sensor</a>
+                <a href="clock.html">Clock</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

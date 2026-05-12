@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:crafting_blocks",
+  "pattern": [
+    " P ",
+    "NCN",
+    " T "
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:comparator"
+    },
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "C": {
+      "item": "xllogic:computer"
+    },
+    "T": {
+      "item": "xllogic:crafting_io"
+    }
+  },
+  "result": {
+    "id": "xllogic:crafting_cpu",
+    "count": 1
+  }
+}

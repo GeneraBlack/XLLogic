@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "xllogic:devices",
+  "pattern": [
+    "GGG",
+    "GNG",
+    "GRG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "N": {
+      "item": "xllogic:network_cable"
+    },
+    "R": {
+      "item": "minecraft:glowstone_dust"
+    }
+  },
+  "result": {
+    "id": "xllogic:screen",
+    "count": 2
+  }
+}

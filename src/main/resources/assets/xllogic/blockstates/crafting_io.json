@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=south": { "model": "xllogic:block/crafting_io" },
+    "facing=west": { "model": "xllogic:block/crafting_io", "y": 90 },
+    "facing=north": { "model": "xllogic:block/crafting_io", "y": 180 },
+    "facing=east": { "model": "xllogic:block/crafting_io", "y": 270 }
+  }
+}

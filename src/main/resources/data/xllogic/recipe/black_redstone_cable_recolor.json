@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "xllogic:colored_redstone_cable_recolor",
+  "ingredients": [
+    {
+      "tag": "xllogic:colored_redstone_cables"
+    },
+    {
+      "item": "minecraft:black_dye"
+    }
+  ],
+  "result": {
+    "id": "xllogic:black_redstone_cable",
+    "count": 1
+  }
+}

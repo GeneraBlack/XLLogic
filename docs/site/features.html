@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Logic | Features</title>
+    <meta name="description" content="XL Logic feature set: sandboxed Python runtime, named screens, Material I/O routing, builder workflows, XLAPI bridges, and test strategy.">
+    <link rel="icon" href="assets/icons/computer.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<div class="site-shell">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand-lockup" href="index.html" aria-label="XL Logic home page">
+                <span class="brand-mark"><img src="assets/icons/computer.svg" alt=""></span>
+                <span class="brand-copy">
+                    <strong>XL Logic</strong>
+                    <span>Python, cable logic, and block-based automation for Minecraft 1.21.1</span>
+                </span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a class="is-active" href="features.html">Features</a>
+                <a href="python.html">Python</a>
+                <a href="builder.html">Builder</a>
+                <a href="blocks.html">Blocks</a>
+                <a href="docs.html">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subhero">
+            <div class="page-card reveal">
+                <div class="kicker">Feature set</div>
+                <h1>This mod is already more than an editor with a run button.</h1>
+                <p>XL Logic combines several technical layers that would normally be scattered across different mods or much later milestones: server-side GraalPy execution, visible network topology, structured screen output, no-code authoring, multiplayer-safe editing, and tested session recovery. The runtime is intentionally sandboxed so automation stays inside exported game-facing APIs instead of crossing into host execution.</p>
+                <div class="status-row">
+                    <span class="tag">Server-authoritative Python</span>
+                    <span class="tag">Sandboxed runtime</span>
+                    <span class="tag tag--cold">Rich screens</span>
+                    <span class="tag tag--warm">No-code builder</span>
+                    <span class="tag">Recovery drafts</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="feature-grid">
+                <article class="timeline-card reveal">
+                    <h3>1. Programming model</h3>
+                    <p>Computers execute Python directly in-game, but inside a server-side, cooperative, sandboxed runtime aligned to Minecraft ticks.</p>
+                    <ul class="timeline-list">
+                        <li>GraalPy runtime on Java 21</li>
+                        <li>F5 start and stop with runtime state and history</li>
+                        <li>Statement, watchdog, and stream guardrails</li>
+                        <li>No host OS, filesystem, process creation, raw socket, environment, or Java/polyglot access from scripts</li>
+                        <li>World, device, and output APIs directly in scripts</li>
+                    </ul>
+                </article>
+                <article class="timeline-card reveal">
+                    <h3>2. Editor and multiplayer</h3>
+                    <p>The project takes multiplayer seriously. An editor lock alone is not enough when viewers, disconnects, and restarts are part of the actual game loop.</p>
+                    <ul class="timeline-list">
+                        <li>Exclusive editor leases with heartbeat</li>
+                        <li>Read-only viewing instead of hard denial</li>
+                        <li>Recovery drafts after persistent target loss</li>
+                        <li>Resume handshake and three-way merge on divergence</li>
+                    </ul>
+                </article>
+                <article class="timeline-card reveal">
+                    <h3>3. Visual output</h3>
+                    <p>Script output is not just text inside the editor. It becomes a real in-world screen interface.</p>
+                    <ul class="timeline-list">
+                        <li>Lines, key-value cards, tables, and plan cards</li>
+                        <li>Multiblock screens with stable sub-rectangle logic</li>
+                        <li>Named screen targets for per-panel output from one computer</li>
+                        <li>Focus mode for larger content</li>
+                        <li>Status LED and persisted last runtime snapshot</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Runtime safety</div>
+                <h2>Powerful in-game, narrow at the host boundary.</h2>
+                <p>XL Logic scripts are meant to automate blocks, endpoints, screens, and bridge responses. They are not general-purpose host scripts, which is why the runtime enforces a narrow execution boundary around what Python can and cannot do.</p>
+            </div>
+            <div class="spec-grid">
+                <article class="spec-card reveal">
+                    <h3>Game-facing API only</h3>
+                    <p>Scripts interact through exported XL Logic objects such as world, screen, network, devices, output, and bridge helpers.</p>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>Host access blocked</h3>
+                    <p>No local filesystem access, no process spawning, no environment access, no native access, no raw socket use, and no Java or polyglot imports are available inside the script context.</p>
+                </article>
+                <article class="spec-card reveal">
+                    <h3>No admin command bridge</h3>
+                    <p>Python does not expose a direct path to op, restart, shutdown, System.exit, or arbitrary server command dispatch. Server control stays outside the scripting surface.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section two-column">
+            <article class="content-card reveal">
+                <div class="section-header">
+                    <div class="kicker">Network and discovery</div>
+                    <h2>Visible topology as part of gameplay.</h2>
+                    <p>Computers, screens, and endpoints are not linked through abstract menus. They hang off a real cable segment, which makes the whole system inspectable in-world and easier to debug.</p>
+                </div>
+                <div class="spec-grid">
+                    <article class="spec-card">
+                        <h3>Local segment</h3>
+                        <ul class="spec-list">
+                            <li>Computer and screen assignment stay strictly segment-local.</li>
+                            <li>Network Cable provides the discovery path.</li>
+                            <li>Multiple computers in one segment are intentionally invalid.</li>
+                        </ul>
+                    </article>
+                    <article class="spec-card">
+                        <h3>Bus logic</h3>
+                        <ul class="spec-list">
+                            <li>Redstone Bus Cable transports 16 channels.</li>
+                            <li>Colored cable filters down to exactly one channel.</li>
+                            <li>The debug view exposes producers, consumers, and blockers.</li>
+                        </ul>
+                    </article>
+                    <article class="spec-card">
+                        <h3>XLAPI bridge</h3>
+                        <ul class="spec-list">
+                            <li>Separates segments and imports remote devices in a controlled way.</li>
+                            <li>Remote policy stays intentionally conservative.</li>
+                            <li>Status, ping, devices, and runtime can be requested as structured responses.</li>
+                        </ul>
+                    </article>
+                </div>
+            </article>
+
+            <aside class="callout reveal" aria-label="XL Logic unique selling points">
+                <div class="section-header">
+                    <div class="kicker">What makes it distinct</div>
+                    <h3>Features that only make sense because they belong together.</h3>
+                </div>
+                <ul class="feature-list">
+                    <li>The no-code builder and Python share the same execution reality.</li>
+                    <li>Named screens and direct Material I/O routes work in both authoring paths.</li>
+                    <li>The same runtime feeds the editor, recovery resume, and in-world screens.</li>
+                    <li>Session recovery and merge UX make multiplayer practical instead of fragile.</li>
+                    <li>GameTests cover not only cables and devices, but also session loss, restart, and resume flows.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Builder + Python</div>
+                <h2>Two entry points, one system.</h2>
+                <p>Players should be able to move between visual blocks and handwritten code without landing in two disconnected versions of the mod.</p>
+            </div>
+            <div class="card-grid">
+                <article class="page-card reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/builder.svg" alt="">
+                        <span>Builder</span>
+                    </div>
+                    <p>Templates for discovery, live clock, rain watch, source-to-sink item and fluid routing, night lamps, thunder alerts, and evening lighting, plus guards, else branches, and world comparisons.</p>
+                </article>
+                <article class="page-card reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/python.svg" alt="">
+                        <span>Python</span>
+                    </div>
+                    <p>Full access to world, devices, named screens, direct Material I/O endpoint routing, crafting, output, network, and XLAPI, while host-level access remains sandboxed away.</p>
+                </article>
+                <article class="page-card reveal">
+                    <div class="card-icon">
+                        <img src="assets/icons/screen.svg" alt="">
+                        <span>Shared output</span>
+                    </div>
+                    <p>Both authoring paths end up in the same shared screen system, the same named screen targets, and the same visible in-world results.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="section-header reveal">
+                <div class="kicker">Test strategy</div>
+                <h2>Branding needs credibility.</h2>
+                <p>A project homepage should do more than promise cool ideas. It should also show that the hard parts are actually being verified.</p>
+            </div>
+            <div class="example-grid">
+                <article class="content-card reveal">
+                    <h3>JUnit</h3>
+                    <p>Runtime regressions such as busy loops, oversized stdout or stderr output, and blocked sandbox escapes are covered with classic tests.</p>
+                </article>
+                <article class="content-card reveal">
+                    <h3>GameTests</h3>
+                    <p>Network rules, named screen targeting, Material I/O routes, session reopen, recovery drafts, divergence, teleport, dimension changes, and restart reload are all covered through NeoForge GameTests.</p>
+                </article>
+                <article class="content-card reveal">
+                    <h3>Live proof</h3>
+                    <p>The current green state includes 50 out of 50 GameTests passing, which makes the site useful later for release communication as well.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div>XL Logic Features | Runtime, network design, builder flows, and multiplayer UX</div>
+            <div class="footer-links">
+                <a href="python.html">Python</a>
+                <a href="builder.html">Builder</a>
+                <a href="docs.html">Docs</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
