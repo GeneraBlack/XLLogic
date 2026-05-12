@@ -134,6 +134,7 @@ This means the mod is designed around in-game automation, not around exposing th
 
 The repository already contains an English website and reference set:
 
+- Installation guide: [INSTALL.md](INSTALL.md)
 - Landing page: [docs/site/index.html](docs/site/index.html)
 - Feature overview: [docs/site/features.html](docs/site/features.html)
 - Python guide: [docs/site/python.html](docs/site/python.html)
