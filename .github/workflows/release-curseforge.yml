@@ -1,0 +1,210 @@
+name: Release to CurseForge
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Tag to build and publish, for example v0.1.0
+        required: true
+        type: string
+      release_type:
+        description: CurseForge release type
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - beta
+          - alpha
+      release_name:
+        description: Optional override for the published version name
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: curseforge-release-${{ github.event.release.tag_name || inputs.tag_name || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Build and publish release
+    runs-on: ubuntu-latest
+    env:
+      JAVA_VERSION: '21'
+      CURSEFORGE_API_TOKEN_PRIMARY: ${{ secrets['CURSEFORGE_API_TOKEN'] }}
+      CURSEFORGE_API_TOKEN_ALT_1: ${{ secrets['CURSEFORGE_TOKEN'] }}
+      CURSEFORGE_API_TOKEN_ALT_2: ${{ secrets['PUBLISH_CURSEFORGE_TOKEN'] }}
+      CURSEFORGE_PROJECT_ID_PRIMARY: ${{ vars['CURSEFORGE_PROJECT_ID'] }}
+      CURSEFORGE_PROJECT_ID_ALT_1: ${{ secrets['CURSEFORGE_PROJECT_ID'] }}
+      CURSEFORGE_PROJECT_ID_ALT_2: ${{ vars['CURSEFORGE_ID'] }}
+      CURSEFORGE_PROJECT_ID_ALT_3: ${{ secrets['CURSEFORGE_ID'] }}
+    steps:
+      - name: Resolve publish configuration
+        id: publish_config
+        shell: bash
+        run: |
+          curseforge_api_token="$CURSEFORGE_API_TOKEN_PRIMARY"
+          if [ -z "$curseforge_api_token" ]; then
+            curseforge_api_token="$CURSEFORGE_API_TOKEN_ALT_1"
+          fi
+          if [ -z "$curseforge_api_token" ]; then
+            curseforge_api_token="$CURSEFORGE_API_TOKEN_ALT_2"
+          fi
+
+          curseforge_project_id="$CURSEFORGE_PROJECT_ID_PRIMARY"
+          if [ -z "$curseforge_project_id" ]; then
+            curseforge_project_id="$CURSEFORGE_PROJECT_ID_ALT_1"
+          fi
+          if [ -z "$curseforge_project_id" ]; then
+            curseforge_project_id="$CURSEFORGE_PROJECT_ID_ALT_2"
+          fi
+          if [ -z "$curseforge_project_id" ]; then
+            curseforge_project_id="$CURSEFORGE_PROJECT_ID_ALT_3"
+          fi
+
+          if [ -z "$curseforge_api_token" ]; then
+            echo "::error::Missing CurseForge token. Define CURSEFORGE_API_TOKEN, CURSEFORGE_TOKEN, or PUBLISH_CURSEFORGE_TOKEN."
+            exit 1
+          fi
+
+          if [ -z "$curseforge_project_id" ]; then
+            echo "::error::Missing CurseForge project id. Define CURSEFORGE_PROJECT_ID or CURSEFORGE_ID as a repository variable or secret."
+            exit 1
+          fi
+
+          echo "curseforge_api_token=$curseforge_api_token" >> "$GITHUB_OUTPUT"
+          echo "curseforge_project_id=$curseforge_project_id" >> "$GITHUB_OUTPUT"
+
+      - name: Check out release ref
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name || inputs.tag_name || github.ref }}
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Load release metadata
+        id: meta
+        env:
+          EVENT_TAG_NAME: ${{ github.event.release.tag_name }}
+          EVENT_RELEASE_NAME: ${{ github.event.release.name }}
+          EVENT_RELEASE_BODY: ${{ github.event.release.body }}
+          EVENT_IS_PRERELEASE: ${{ github.event.release.prerelease }}
+          INPUT_TAG_NAME: ${{ inputs.tag_name }}
+          INPUT_RELEASE_NAME: ${{ inputs.release_name }}
+          INPUT_RELEASE_TYPE: ${{ inputs.release_type }}
+        shell: bash
+        run: |
+          mod_version="$(grep '^mod_version=' gradle.properties | cut -d= -f2-)"
+          minecraft_version="$(grep '^minecraft_version=' gradle.properties | cut -d= -f2-)"
+          mod_id="$(grep '^mod_id=' gradle.properties | cut -d= -f2-)"
+          mod_name="$(grep '^mod_name=' gradle.properties | cut -d= -f2-)"
+
+          tag_name="$EVENT_TAG_NAME"
+          if [ -z "$tag_name" ]; then
+            tag_name="$INPUT_TAG_NAME"
+          fi
+
+          if [ -z "$tag_name" ]; then
+            echo "::error::No release tag was provided."
+            exit 1
+          fi
+
+          if [ "$tag_name" != "$mod_version" ] && [ "$tag_name" != "v$mod_version" ]; then
+            echo "::error::Tag '$tag_name' does not match mod_version '$mod_version'. Expected '$mod_version' or 'v$mod_version'."
+            exit 1
+          fi
+
+          release_name="$INPUT_RELEASE_NAME"
+          if [ -z "$release_name" ]; then
+            release_name="$EVENT_RELEASE_NAME"
+          fi
+          if [ -z "$release_name" ]; then
+            release_name="$mod_name $mod_version for Minecraft $minecraft_version"
+          fi
+
+          version_type="$INPUT_RELEASE_TYPE"
+          if [ -z "$version_type" ]; then
+            if [ "$EVENT_IS_PRERELEASE" = "true" ]; then
+              case "${tag_name,,}" in
+                *alpha*) version_type="alpha" ;;
+                *) version_type="beta" ;;
+              esac
+            else
+              version_type="release"
+            fi
+          fi
+
+          github_prerelease="false"
+          if [ "$version_type" != "release" ]; then
+            github_prerelease="true"
+          fi
+
+          changelog="$EVENT_RELEASE_BODY"
+          if [ -z "$changelog" ]; then
+            changelog="Automated release for $release_name."
+          fi
+
+          artifact_path="build/libs/$mod_id-$mod_version.jar"
+
+          echo "mod_version=$mod_version" >> "$GITHUB_OUTPUT"
+          echo "minecraft_version=$minecraft_version" >> "$GITHUB_OUTPUT"
+          echo "mod_id=$mod_id" >> "$GITHUB_OUTPUT"
+          echo "release_name=$release_name" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$tag_name" >> "$GITHUB_OUTPUT"
+          echo "version_type=$version_type" >> "$GITHUB_OUTPUT"
+          echo "github_prerelease=$github_prerelease" >> "$GITHUB_OUTPUT"
+          echo "artifact_path=$artifact_path" >> "$GITHUB_OUTPUT"
+          {
+            echo "changelog<<EOF"
+            printf '%s\n' "$changelog"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build bundled release jar
+        shell: bash
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon clean shadowJar
+
+      - name: Verify bundled artifact
+        shell: bash
+        run: |
+          if [ ! -f "${{ steps.meta.outputs.artifact_path }}" ]; then
+            echo "::error::Bundled artifact not found at ${{ steps.meta.outputs.artifact_path }}."
+            ls -la build/libs || true
+            exit 1
+          fi
+
+          ls -lh "${{ steps.meta.outputs.artifact_path }}"
+
+      - name: Publish GitHub release asset and CurseForge file
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          files: ${{ steps.meta.outputs.artifact_path }}
+          name: ${{ steps.meta.outputs.release_name }}
+          version: ${{ steps.meta.outputs.mod_version }}
+          version-type: ${{ steps.meta.outputs.version_type }}
+          changelog: ${{ steps.meta.outputs.changelog }}
+          loaders: neoforge
+          game-versions: ${{ steps.meta.outputs.minecraft_version }}
+          java: ${{ env.JAVA_VERSION }}
+          curseforge-id: ${{ steps.publish_config.outputs.curseforge_project_id }}
+          curseforge-token: ${{ steps.publish_config.outputs.curseforge_api_token }}
+          github-tag: ${{ steps.meta.outputs.tag_name }}
+          github-prerelease: ${{ steps.meta.outputs.github_prerelease }}
+          github-generate-changelog: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
