@@ -1,4 +1,4 @@
-name: Release to CurseForge
+name: Release XL Logic
 
 on:
   release:
@@ -21,6 +21,10 @@ on:
           - alpha
       release_name:
         description: Optional override for the published version name
+        required: false
+        type: string
+      release_notes_file:
+        description: Optional path to a markdown file used when the GitHub release body is empty
         required: false
         type: string
 
@@ -105,6 +109,7 @@ jobs:
           EVENT_IS_PRERELEASE: ${{ github.event.release.prerelease }}
           INPUT_TAG_NAME: ${{ inputs.tag_name }}
           INPUT_RELEASE_NAME: ${{ inputs.release_name }}
+          INPUT_RELEASE_NOTES_FILE: ${{ inputs.release_notes_file }}
           INPUT_RELEASE_TYPE: ${{ inputs.release_type }}
         shell: bash
         run: |
@@ -154,8 +159,25 @@ jobs:
           fi
 
           changelog="$EVENT_RELEASE_BODY"
+          changelog_source="github_release_body"
+          if [ -z "$changelog" ]; then
+            release_notes_file="$INPUT_RELEASE_NOTES_FILE"
+            if [ -z "$release_notes_file" ]; then
+              release_notes_file="docs/meta/GITHUB_RELEASE_${mod_version}.md"
+            fi
+
+            if [ -f "$release_notes_file" ]; then
+              changelog="$(cat "$release_notes_file")"
+              changelog_source="$release_notes_file"
+            elif [ -n "$INPUT_RELEASE_NOTES_FILE" ]; then
+              echo "::error::Release notes file '$INPUT_RELEASE_NOTES_FILE' was not found."
+              exit 1
+            fi
+          fi
+
           if [ -z "$changelog" ]; then
             changelog="Automated release for $release_name."
+            changelog_source="generated_fallback"
           fi
 
           artifact_path="build/libs/$mod_id-$mod_version.jar"
@@ -168,17 +190,18 @@ jobs:
           echo "version_type=$version_type" >> "$GITHUB_OUTPUT"
           echo "github_prerelease=$github_prerelease" >> "$GITHUB_OUTPUT"
           echo "artifact_path=$artifact_path" >> "$GITHUB_OUTPUT"
+          echo "changelog_source=$changelog_source" >> "$GITHUB_OUTPUT"
           {
             echo "changelog<<EOF"
             printf '%s\n' "$changelog"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Build bundled release jar
+      - name: Validate and build bundled release jar
         shell: bash
         run: |
           chmod +x gradlew
-          ./gradlew --no-daemon clean shadowJar
+          ./gradlew --no-daemon clean test runGameTestServer shadowJar
 
       - name: Verify bundled artifact
         shell: bash
@@ -192,6 +215,7 @@ jobs:
           ls -lh "${{ steps.meta.outputs.artifact_path }}"
 
       - name: Publish GitHub release asset and CurseForge file
+        id: publish
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           files: ${{ steps.meta.outputs.artifact_path }}
@@ -208,3 +232,21 @@ jobs:
           github-prerelease: ${{ steps.meta.outputs.github_prerelease }}
           github-generate-changelog: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write release summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Release summary"
+            echo
+            echo "- Tag: ${{ steps.meta.outputs.tag_name }}"
+            echo "- Version: ${{ steps.meta.outputs.mod_version }}"
+            echo "- Release notes source: ${{ steps.meta.outputs.changelog_source }}"
+            if [ -n "${{ steps.publish.outputs.github-url }}" ]; then
+              echo "- GitHub: ${{ steps.publish.outputs.github-url }}"
+            fi
+            if [ -n "${{ steps.publish.outputs.curseforge-url }}" ]; then
+              echo "- CurseForge: ${{ steps.publish.outputs.curseforge-url }}"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
