@@ -199,7 +199,7 @@ jobs:
 
       - name: Validate and build bundled release jar
         shell: pwsh
-        run: .\gradlew.bat --no-daemon clean build runGameTestServer shadowJar
+        run: .\gradlew.bat --no-daemon --max-workers 1 --no-build-cache --no-configuration-cache clean build runGameTestServer shadowJar
 
       - name: Verify bundled artifact
         shell: bash
