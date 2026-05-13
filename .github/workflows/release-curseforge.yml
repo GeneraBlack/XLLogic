@@ -38,7 +38,7 @@ concurrency:
 jobs:
   publish:
     name: Build and publish release
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       JAVA_VERSION: '21'
       CURSEFORGE_API_TOKEN_PRIMARY: ${{ secrets['CURSEFORGE_API_TOKEN'] }}
@@ -198,10 +198,8 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Validate and build bundled release jar
-        shell: bash
-        run: |
-          chmod +x gradlew
-          ./gradlew --no-daemon clean build runGameTestServer shadowJar
+        shell: pwsh
+        run: .\gradlew.bat --no-daemon clean build runGameTestServer shadowJar
 
       - name: Verify bundled artifact
         shell: bash
