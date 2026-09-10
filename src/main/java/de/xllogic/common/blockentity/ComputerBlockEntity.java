@@ -27,6 +27,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -391,6 +392,10 @@ public final class ComputerBlockEntity extends BlockEntity {
         }
 
         this.tryAutoStartIfNeeded();
+        if (this.executionSession == null && this.runtimeState.running()) {
+            this.finishExecution(ComputerRuntimeSnapshot.guardrailRejected(this.runtimeState, STALE_RUNNING_SUMMARY));
+            return;
+        }
         this.advanceExecutionSession();
 
         final long now = this.level.getGameTime();
@@ -466,17 +471,14 @@ public final class ComputerBlockEntity extends BlockEntity {
         final boolean running = tag.getBoolean(TAG_RUNNING);
         final boolean success = !tag.contains(TAG_LAST_EXECUTION_SUCCESS) || tag.getBoolean(TAG_LAST_EXECUTION_SUCCESS);
         final String summary = tag.contains(TAG_LAST_EXECUTION_SUMMARY) ? tag.getString(TAG_LAST_EXECUTION_SUMMARY) : "";
-        final ComputerRuntimeSnapshot persistedState = new ComputerRuntimeSnapshot(
-            false,
+        this.runtimeState = new ComputerRuntimeSnapshot(
+            running,
             success,
             summary,
             readOutputLines(tag),
             readOutputEntries(tag),
             readPlanSteps(tag),
             readPlanJob(tag));
-        this.runtimeState = running
-            ? ComputerRuntimeSnapshot.guardrailRejected(persistedState, STALE_RUNNING_SUMMARY)
-            : persistedState;
     }
 
     @Override
@@ -574,6 +576,14 @@ public final class ComputerBlockEntity extends BlockEntity {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(final Connection net, final ClientboundBlockEntityDataPacket pkt, final HolderLookup.Provider lookupProvider) {
+        final CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            this.loadCustomOnly(tag, lookupProvider);
+        }
     }
 
     @Override

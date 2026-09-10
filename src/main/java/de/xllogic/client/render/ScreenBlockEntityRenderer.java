@@ -19,7 +19,9 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
 public final class ScreenBlockEntityRenderer implements BlockEntityRenderer<ScreenBlockEntity> {
@@ -121,6 +123,26 @@ public final class ScreenBlockEntityRenderer implements BlockEntityRenderer<Scre
     @Override
     public int getViewDistance() {
         return 96;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(final ScreenBlockEntity screen) {
+        if (!screen.isController() || (screen.getSpanX() <= 1 && screen.getSpanY() <= 1)) {
+            return new AABB(screen.getBlockPos());
+        }
+        final Direction facing = screen.getBlockState().getValue(ScreenBlock.FACING);
+        final Direction horizontal = facing.getCounterClockWise();
+        final BlockPos corner1 = screen.getBlockPos();
+        final BlockPos corner2 = screen.getBlockPos()
+                .relative(horizontal, screen.getSpanX() - 1)
+                .relative(Direction.UP, screen.getSpanY() - 1);
+        final int minX = Math.min(corner1.getX(), corner2.getX());
+        final int maxX = Math.max(corner1.getX(), corner2.getX()) + 1;
+        final int minY = Math.min(corner1.getY(), corner2.getY());
+        final int maxY = Math.max(corner1.getY(), corner2.getY()) + 1;
+        final int minZ = Math.min(corner1.getZ(), corner2.getZ());
+        final int maxZ = Math.max(corner1.getZ(), corner2.getZ()) + 1;
+        return new AABB(minX, minY, minZ, maxX, maxY, maxZ).inflate(0.5D);
     }
 
     private void renderRuntime(final ScreenSurface surface, final ScreenBlockEntity screen, final ComputerRuntimeSnapshot runtimeState, final RenderContext context) {
@@ -692,10 +714,9 @@ public final class ScreenBlockEntityRenderer implements BlockEntityRenderer<Scre
     private void applyScreenTransform(final Direction facing, final int spanX, final int spanY, final PoseStack poseStack) {
         final double horizontalCenterOffset = Math.max(0, spanX - 1) * 0.5D;
         final double verticalCenterOffset = Math.max(0, spanY - 1) * 0.5D;
-        final double multiblockLift = Math.max(0, spanY - 1) * 0.04D;
         poseStack.translate(0.5D, PANEL_Y_OFFSET, 0.5D);
         poseStack.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()));
-        poseStack.translate(horizontalCenterOffset, verticalCenterOffset + multiblockLift, PANEL_Z_OFFSET);
+        poseStack.translate(horizontalCenterOffset, verticalCenterOffset, PANEL_Z_OFFSET);
     }
 
     private ScreenSurface surface(final ScreenBlockEntity screen, final Font font) {

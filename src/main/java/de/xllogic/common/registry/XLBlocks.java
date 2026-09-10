@@ -45,7 +45,7 @@ public final class XLBlocks {
     public static final DeferredBlock<ColoredRedstoneCableBlock> BLUE_REDSTONE_CABLE = BLOCKS.registerBlock("blue_redstone_cable", properties -> new ColoredRedstoneCableBlock(properties, 11), cable(MapColor.COLOR_BLUE));
     public static final DeferredBlock<ColoredRedstoneCableBlock> BROWN_REDSTONE_CABLE = BLOCKS.registerBlock("brown_redstone_cable", properties -> new ColoredRedstoneCableBlock(properties, 12), cable(MapColor.COLOR_BROWN));
     public static final DeferredBlock<ColoredRedstoneCableBlock> GREEN_REDSTONE_CABLE = BLOCKS.registerBlock("green_redstone_cable", properties -> new ColoredRedstoneCableBlock(properties, 13), cable(MapColor.COLOR_GREEN));
-    public static final DeferredBlock<ColoredRedstoneCableBlock> COLORED_REDSTONE_CABLE = BLOCKS.registerBlock("colored_redstone_cable", properties -> new ColoredRedstoneCableBlock(properties, 14), cable(MapColor.COLOR_RED));
+    public static final DeferredBlock<ColoredRedstoneCableBlock> RED_REDSTONE_CABLE = BLOCKS.registerBlock("red_redstone_cable", properties -> new ColoredRedstoneCableBlock(properties, 14), cable(MapColor.COLOR_RED));
     public static final DeferredBlock<ColoredRedstoneCableBlock> BLACK_REDSTONE_CABLE = BLOCKS.registerBlock("black_redstone_cable", properties -> new ColoredRedstoneCableBlock(properties, 15), cable(MapColor.COLOR_BLACK));
     public static final DeferredBlock<LightSensorBlock> LIGHT_SENSOR = BLOCKS.registerBlock("light_sensor", LightSensorBlock::new, sensor(MapColor.GLOW_LICHEN));
     public static final DeferredBlock<ClockBlock> CLOCK = BLOCKS.registerBlock("clock", ClockBlock::new, metalDevice(MapColor.GOLD));
@@ -73,7 +73,7 @@ public final class XLBlocks {
                 BLUE_REDSTONE_CABLE.get(),
                 BROWN_REDSTONE_CABLE.get(),
                 GREEN_REDSTONE_CABLE.get(),
-                COLORED_REDSTONE_CABLE.get(),
+                RED_REDSTONE_CABLE.get(),
                 BLACK_REDSTONE_CABLE.get()
         };
     }
@@ -94,9 +94,9 @@ public final class XLBlocks {
             case 11 -> BLUE_REDSTONE_CABLE;
             case 12 -> BROWN_REDSTONE_CABLE;
             case 13 -> GREEN_REDSTONE_CABLE;
-            case 14 -> COLORED_REDSTONE_CABLE;
+            case 14 -> RED_REDSTONE_CABLE;
             case 15 -> BLACK_REDSTONE_CABLE;
-            default -> COLORED_REDSTONE_CABLE;
+            default -> RED_REDSTONE_CABLE;
         };
     }
 

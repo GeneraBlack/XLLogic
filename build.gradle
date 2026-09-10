@@ -79,6 +79,13 @@ tasks.named('shadowJar').configure {
     mergeServiceFiles()
     zip64 true
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+    exclude '**/*.exe'
+    exclude '**/*.bat'
+    exclude '**/*.cmd'
+    exclude '**/*.ps1'
+    exclude '**/*.sh'
+    exclude '**/*.csh'
+    exclude '**/*.fish'
 }
 
 tasks.named('jar').configure {

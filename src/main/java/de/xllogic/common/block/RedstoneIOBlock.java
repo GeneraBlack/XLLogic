@@ -71,7 +71,7 @@ public final class RedstoneIOBlock extends AbstractDeviceBlock {
     public int getSignal(final BlockState state, final BlockGetter level, final BlockPos pos, final Direction side) {
         final BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof RedstoneIOBlockEntity redstoneIo) {
-            return redstoneIo.getSignal(side);
+            return redstoneIo.getSignal(side.getOpposite());
         }
         return 0;
     }

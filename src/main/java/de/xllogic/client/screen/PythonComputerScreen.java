@@ -526,13 +526,14 @@ public final class PythonComputerScreen extends Screen {
             final EditorLayout layout = this.editorLayout();
             final RecoveryCompareLayout compareLayout = this.recoveryCompareLayout();
             final int margin = 12;
-            final int headerInfoLeft = margin + 170;
+            final int headerInfoLeft = margin + Math.max(92, this.font.width(this.title) + 12);
             final int headerLineHeight = this.font.lineHeight + 2;
             final HeaderActionButtonLayout guideBookButton = this.guideBookButtonLayout(compareLayout);
             final HeaderActionButtonLayout builderButton = this.noCodeBuilderButtonLayout(compareLayout);
             final HeaderActionButtonLayout autoStartButton = this.showsAutoStartToggle() ? this.autoStartButtonLayout(compareLayout) : null;
-            final int headerTextRight = Math.max(headerInfoLeft + 120, (autoStartButton == null ? builderButton.left() : autoStartButton.left()) - 8);
-            final int headerTextWidth = Math.max(120, headerTextRight - headerInfoLeft);
+            final int leftmostButtonLeft = autoStartButton == null ? builderButton.left() : autoStartButton.left();
+            final int headerTextRight = Math.max(headerInfoLeft + 40, leftmostButtonLeft - 6);
+            final int headerTextWidth = Math.max(20, headerTextRight - headerInfoLeft);
             final String runtimeLine = "Runtime: " + this.runtime.displayName() + (this.runtime.available() ? "" : " (unavailable)");
             final String computerLine = "Computer: " + this.executionContext.computerName() + " | endpoints: "
                     + this.executionContext.endpointCount();
@@ -566,7 +567,7 @@ public final class PythonComputerScreen extends Screen {
             }
 
             this.renderEditor(graphics, layout);
-            this.renderOutput(graphics, layout.left(), layout.outputTop(), layout.outputHeight());
+            this.renderOutput(graphics, layout.left(), layout.outputTop(), layout.outputHeight(), layout.right());
             if (compareLayout != null) {
                 this.renderRecoveryComparePanel(graphics, compareLayout);
             }
@@ -744,8 +745,15 @@ public final class PythonComputerScreen extends Screen {
         graphics.fill(popupLayout.left(), popupLayout.top(), popupLayout.left() + popupLayout.width(), popupLayout.top() + popupLayout.height(), SUGGESTION_BACKGROUND);
         graphics.renderOutline(popupLayout.left(), popupLayout.top(), popupLayout.width(), popupLayout.height(), SUGGESTION_BORDER);
 
-        for (int index = 0; index < this.suggestionSession.items().size(); index++) {
-            final int rowTop = popupLayout.top() + 4 + index * popupLayout.itemHeight();
+        final int totalItems = this.suggestionSession.items().size();
+        final int visibleCount = popupLayout.itemCount();
+        final int scrollOffset = Math.max(0, Math.min(this.selectedSuggestionIndex - visibleCount / 2, totalItems - visibleCount));
+        for (int vi = 0; vi < visibleCount; vi++) {
+            final int index = scrollOffset + vi;
+            if (index >= totalItems) {
+                break;
+            }
+            final int rowTop = popupLayout.top() + 4 + vi * popupLayout.itemHeight();
             if (index == this.selectedSuggestionIndex) {
                 graphics.fill(popupLayout.left() + 1, rowTop, popupLayout.left() + popupLayout.width() - 1, rowTop + popupLayout.itemHeight(), SUGGESTION_SELECTED);
             }
@@ -763,11 +771,11 @@ public final class PythonComputerScreen extends Screen {
         }
     }
 
-    private void renderOutput(final GuiGraphics graphics, final int left, final int top, final int height) {
+    private void renderOutput(final GuiGraphics graphics, final int left, final int top, final int height, final int right) {
         graphics.drawString(this.font, Component.literal("Output"), left + 8, top + 6, HEADER_TEXT);
         graphics.drawString(this.font, Component.literal("Wheel scroll  |  Ctrl+End latest"), left + 56, top + 6, STATUS_TEXT);
         final int contentTop = top + 20;
-        final int contentWidth = Math.max(40, this.width - left - 28);
+        final int contentWidth = Math.max(40, right - left - 28);
         final List<ComputerOutputEntry> visibleEntries = this.visibleOutputEntries(height - 24);
         int y = contentTop;
         for (final ComputerOutputEntry outputEntry : visibleEntries) {
@@ -1715,29 +1723,41 @@ public final class PythonComputerScreen extends Screen {
         this.minecraft.setScreen(new NoCodeBuilderScreen(this, this.document.getText(), this.executionContext, this.canEditDocument()));
     }
 
+    private boolean useCompactHeaderButtons(final RecoveryCompareLayout compareLayout) {
+        final int right = (compareLayout == null ? this.width - 12 : compareLayout.left() - 8);
+        return right < 440;
+    }
+
     private HeaderActionButtonLayout guideBookButtonLayout(final RecoveryCompareLayout compareLayout) {
         final int margin = 12;
         final int right = (compareLayout == null ? this.width - margin : compareLayout.left() - 8);
-        return this.headerActionButtonLayout(Component.translatable("screen.xllogic.guide_book.open").getString(), right);
+        final String label = this.useCompactHeaderButtons(compareLayout) ? "Guide" : Component.translatable("screen.xllogic.guide_book.open").getString();
+        return this.headerActionButtonLayout(label, right);
     }
 
     private HeaderActionButtonLayout noCodeBuilderButtonLayout(final RecoveryCompareLayout compareLayout) {
         final HeaderActionButtonLayout guideLayout = this.guideBookButtonLayout(compareLayout);
-        return this.headerActionButtonLayout(Component.translatable("screen.xllogic.no_code_builder.open").getString(), guideLayout.left() - 8);
+        final String label = this.useCompactHeaderButtons(compareLayout) ? "Builder" : Component.translatable("screen.xllogic.no_code_builder.open").getString();
+        return this.headerActionButtonLayout(label, guideLayout.left() - 6);
     }
 
     private HeaderActionButtonLayout autoStartButtonLayout(final RecoveryCompareLayout compareLayout) {
         final HeaderActionButtonLayout builderLayout = this.noCodeBuilderButtonLayout(compareLayout);
-        return this.headerActionButtonLayout(this.autoStartButtonLabel(), builderLayout.left() - 8);
+        final String label = this.autoStartButtonLabel(this.useCompactHeaderButtons(compareLayout));
+        return this.headerActionButtonLayout(label, builderLayout.left() - 6);
+    }
+
+    private String autoStartButtonLabel(final boolean compact) {
+        return (this.autoStartOnLoad ? "[x] " : "[ ] ") + (compact ? "Auto" : "Auto-start");
     }
 
     private String autoStartButtonLabel() {
-        return (this.autoStartOnLoad ? "[x] " : "[ ] ") + "Auto-start";
+        return this.autoStartButtonLabel(false);
     }
 
     private HeaderActionButtonLayout headerActionButtonLayout(final String label, final int right) {
         final int margin = 12;
-        final int width = Math.max(64, this.font.width(label) + 16);
+        final int width = Math.max(48, this.font.width(label) + 12);
         final int height = this.font.lineHeight + 8;
         return new HeaderActionButtonLayout(Math.max(margin, right - width), margin, width, height, label);
     }
@@ -2181,9 +2201,10 @@ public final class PythonComputerScreen extends Screen {
         final int compareWidth = this.hasRecoveryCompareView()
             ? Math.min(360, Math.max(240, (this.width - margin * 2) / 3))
             : 0;
-        final int outputHeight = Math.min(170, Math.max(120, this.height / 3));
+        final int availableHeight = Math.max(80, this.height - margin * 2 - headerHeight - gap);
+        final int outputHeight = Math.min(170, Math.max(45, availableHeight / 3));
+        final int editorHeight = Math.max(45, availableHeight - outputHeight);
         final int editorTop = margin + headerHeight;
-        final int editorHeight = this.height - margin - editorTop - outputHeight - gap;
         final int editorLeft = margin;
         final int editorRight = this.width - margin - compareWidth - (compareWidth == 0 ? 0 : gap);
         final int outputTop = editorTop + editorHeight + gap;
@@ -2259,18 +2280,19 @@ public final class PythonComputerScreen extends Screen {
         final int cursorY = layout.textTop() + visibleLine * layout.lineHeight();
         final int itemHeight = this.font.lineHeight + 4;
         final int itemCount = this.suggestionSession.items().size();
+        final int visibleItemCount = Math.min(itemCount, 8);
         int popupWidth = 150;
         for (final PythonSuggestionEngine.SuggestionItem item : this.suggestionSession.items()) {
             popupWidth = Math.max(popupWidth, this.font.width(item.label()) + this.font.width(item.detail()) + 24);
         }
         popupWidth = Math.min(popupWidth, Math.max(150, layout.right() - layout.textLeft() - 8));
         final int left = Mth.clamp(cursorX, layout.textLeft(), Math.max(layout.textLeft(), layout.right() - popupWidth - 8));
-        final int height = itemCount * itemHeight + 8;
+        final int height = visibleItemCount * itemHeight + 8;
         int top = cursorY + this.font.lineHeight + 4;
         if (top + height > layout.bottom() - 4) {
             top = Math.max(layout.top() + 4, cursorY - height - 4);
         }
-        return new SuggestionPopupLayout(left, top, popupWidth, height, itemHeight, itemCount);
+        return new SuggestionPopupLayout(left, top, popupWidth, height, itemHeight, visibleItemCount);
     }
 
     private int editorTextRenderLeft(final EditorLayout layout) {

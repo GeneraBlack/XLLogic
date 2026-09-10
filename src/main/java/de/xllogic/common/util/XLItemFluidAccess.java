@@ -122,7 +122,7 @@ public final class XLItemFluidAccess {
             return placeInEmptySlot(simulatedSlots, slot, stack, slotLimit, remaining);
         }
 
-        if (simulated.getItem() != stack.getItem()) {
+        if (!ItemStack.isSameItemSameComponents(simulated, stack)) {
             return remaining;
         }
 

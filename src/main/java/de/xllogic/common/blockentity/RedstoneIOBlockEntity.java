@@ -129,7 +129,7 @@ public final class RedstoneIOBlockEntity extends NamedNetworkEndpointBlockEntity
     @Override
     protected void loadAdditional(final CompoundTag tag, final HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.mode = RedstoneIOMode.valueOf(tag.getString("Mode"));
+        this.mode = tag.contains("Mode") ? RedstoneIOMode.valueOf(tag.getString("Mode")) : RedstoneIOMode.INPUT;
         this.sideLevels = ensureSize(tag.getIntArray("SideLevels"), Direction.values().length);
         this.sideBusChannels = ensureSize(tag.getIntArray("SideBusChannels"), Direction.values().length);
     }

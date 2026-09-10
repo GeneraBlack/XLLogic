@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "xllogic:colored_redstone_cable"
+          "name": "xllogic:red_redstone_cable"
         }
       ],
       "conditions": [

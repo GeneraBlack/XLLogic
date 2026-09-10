@@ -4,6 +4,9 @@ on:
   release:
     types:
       - published
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       tag_name:
@@ -122,6 +125,9 @@ jobs:
           if [ -z "$tag_name" ]; then
             tag_name="$INPUT_TAG_NAME"
           fi
+          if [ -z "$tag_name" ] && [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            tag_name="${GITHUB_REF#refs/tags/}"
+          fi
 
           if [ -z "$tag_name" ]; then
             echo "::error::No release tag was provided."
@@ -209,6 +215,14 @@ jobs:
             ls -la build/libs || true
             exit 1
           fi
+
+          prohibited_files=$(jar tf "${{ steps.meta.outputs.artifact_path }}" | grep -Ei '\.(exe|bat|cmd|ps1|sh|csh|fish)$' || true)
+          if [ -n "$prohibited_files" ]; then
+            echo "::error::Prohibited executable or script found inside the release JAR:"
+            echo "$prohibited_files"
+            exit 1
+          fi
+          echo "Artifact verified: zero prohibited executable or script files found."
 
           ls -lh "${{ steps.meta.outputs.artifact_path }}"
 

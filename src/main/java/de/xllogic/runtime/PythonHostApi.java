@@ -469,8 +469,9 @@ public final class PythonHostApi {
 
     private void recordDiagnosticOutput(final ComputerOutputEntry outputEntry) {
         recordLimited(this.outputEntries, outputEntry, MAX_RECORDED_OUTPUT_ENTRIES);
-        if (this.executionTranscript != null) {
-            this.executionTranscript.recordStructuredOutput(outputEntry);
+        final var transcript = this.executionTranscript;
+        if (transcript != null) {
+            transcript.recordStructuredOutput(outputEntry);
         }
     }
 

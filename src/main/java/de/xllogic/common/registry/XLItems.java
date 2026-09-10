@@ -31,7 +31,7 @@ public final class XLItems {
         ITEMS.registerSimpleBlockItem(XLBlocks.BLUE_REDSTONE_CABLE, new Item.Properties());
         ITEMS.registerSimpleBlockItem(XLBlocks.BROWN_REDSTONE_CABLE, new Item.Properties());
         ITEMS.registerSimpleBlockItem(XLBlocks.GREEN_REDSTONE_CABLE, new Item.Properties());
-        ITEMS.registerSimpleBlockItem(XLBlocks.COLORED_REDSTONE_CABLE, new Item.Properties());
+        ITEMS.registerSimpleBlockItem(XLBlocks.RED_REDSTONE_CABLE, new Item.Properties());
         ITEMS.registerSimpleBlockItem(XLBlocks.BLACK_REDSTONE_CABLE, new Item.Properties());
         ITEMS.registerSimpleBlockItem(XLBlocks.LIGHT_SENSOR, new Item.Properties());
         ITEMS.registerSimpleBlockItem(XLBlocks.CLOCK, new Item.Properties());

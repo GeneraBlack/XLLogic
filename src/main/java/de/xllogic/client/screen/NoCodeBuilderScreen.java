@@ -15,6 +15,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import org.lwjgl.glfw.GLFW;
 
 public final class NoCodeBuilderScreen extends Screen {
@@ -28,7 +29,6 @@ public final class NoCodeBuilderScreen extends Screen {
     private static final int SECTION_COLOR = 0xFF79C0FF;
     private static final int MAX_MESSAGE_LENGTH = 256;
     private static final int MAX_VISIBLE_ROWS = 11;
-    private static final int TEMPLATE_COLUMNS = 4;
     private static final String DEFAULT_ITEM_ID = "minecraft:cobblestone";
     private static final String DEFAULT_FLUID_ID = "minecraft:water";
     private static final String DEFAULT_SIDE = "north";
@@ -49,6 +49,7 @@ public final class NoCodeBuilderScreen extends Screen {
     private final boolean currentScriptBlank;
     private int selectedBlockIndex;
     private int blockListScroll;
+    private int catalogScroll;
     private EditBox messageBox;
 
     public NoCodeBuilderScreen(final PythonComputerScreen returnScreen,
@@ -89,40 +90,70 @@ public final class NoCodeBuilderScreen extends Screen {
 
         this.buildTemplateButtons(layout);
 
-        int catalogY = layout.contentTop() + 18;
-        for (final NoCodeBlockKind kind : NoCodeBlockKind.values()) {
-            final NoCodeBlockKind targetKind = kind;
-            this.addRenderableWidget(Button.builder(Component.literal("+ " + kind.label()), ignored -> this.addBlock(targetKind))
-                    .bounds(layout.catalogLeft() + 10, catalogY, layout.catalogWidth() - 20, 20)
+        final int catalogVisibleRows = layout.catalogVisibleRows();
+        final NoCodeBlockKind[] kinds = NoCodeBlockKind.values();
+        final int maxCatalogScroll = Math.max(0, kinds.length - catalogVisibleRows);
+        this.catalogScroll = Mth.clamp(this.catalogScroll, 0, maxCatalogScroll);
+
+        if (this.catalogScroll > 0) {
+            this.addRenderableWidget(Button.builder(Component.literal("^"), ignored -> {
+                        this.catalogScroll--;
+                        this.init();
+                    })
+                    .bounds(layout.catalogRight() - 26, layout.contentTop() + 4, 18, 18)
                     .build());
-            catalogY += 24;
+        }
+        if (this.catalogScroll + catalogVisibleRows < kinds.length) {
+            this.addRenderableWidget(Button.builder(Component.literal("v"), ignored -> {
+                        this.catalogScroll++;
+                        this.init();
+                    })
+                    .bounds(layout.catalogRight() - 26, layout.contentBottom() - 24, 18, 18)
+                    .build());
+        }
+
+        int catalogY = layout.contentTop() + 24;
+        for (int row = 0; row < catalogVisibleRows; row++) {
+            final int kindIndex = this.catalogScroll + row;
+            if (kindIndex >= kinds.length) {
+                break;
+            }
+            final NoCodeBlockKind targetKind = kinds[kindIndex];
+            final String label = "+ " + this.font.plainSubstrByWidth(targetKind.label(), layout.catalogWidth() - 24);
+            this.addRenderableWidget(Button.builder(Component.literal(label), ignored -> this.addBlock(targetKind))
+                    .bounds(layout.catalogLeft() + 8, catalogY, layout.catalogWidth() - 16, 20)
+                    .build());
+            catalogY += 22;
         }
 
         final String repeatLabel = this.program.repeat() ? "Looping" : "Run once";
+        final int repeatWidth = Math.max(60, Math.min(98, layout.detailWidth() - 76));
         this.addRenderableWidget(Button.builder(Component.literal(repeatLabel), ignored -> {
                     this.program.setRepeat(!this.program.repeat());
                     this.init();
                 })
-                .bounds(layout.detailLeft() + 12, layout.contentTop() + 16, 98, 20)
+                .bounds(layout.detailLeft() + 12, layout.contentTop() + 16, repeatWidth, 20)
                 .build());
-        final EditBox repeatTicksBox = new EditBox(this.font, layout.detailLeft() + 118, layout.contentTop() + 16, 56, 20, Component.literal("Repeat ticks"));
+        final EditBox repeatTicksBox = new EditBox(this.font, layout.detailLeft() + 12 + repeatWidth + 8, layout.contentTop() + 16, Math.min(56, Math.max(36, layout.detailWidth() - repeatWidth - 28)), 20, Component.literal("Repeat ticks"));
         repeatTicksBox.setMaxLength(4);
         repeatTicksBox.setValue(String.valueOf(this.program.repeatTicks()));
         repeatTicksBox.setEditable(this.editable);
         repeatTicksBox.setResponder(this::applyRepeatTicks);
         this.addRenderableWidget(repeatTicksBox);
 
+        final int actionButtonY = layout.contentBottom() - 26;
+        final int actionButtonWidth = Math.max(26, (layout.programWidth() - 24) / 4);
         this.addRenderableWidget(Button.builder(Component.literal("Up"), ignored -> this.moveSelectedBlock(-1))
-                .bounds(layout.programLeft() + 10, layout.contentBottom() - 60, 52, 20)
+                .bounds(layout.programLeft() + 6, actionButtonY, actionButtonWidth, 20)
                 .build());
         this.addRenderableWidget(Button.builder(Component.literal("Down"), ignored -> this.moveSelectedBlock(1))
-                .bounds(layout.programLeft() + 66, layout.contentBottom() - 60, 52, 20)
+                .bounds(layout.programLeft() + 6 + (actionButtonWidth + 2), actionButtonY, actionButtonWidth, 20)
                 .build());
         this.addRenderableWidget(Button.builder(Component.literal("Copy"), ignored -> this.duplicateSelectedBlock())
-                .bounds(layout.programLeft() + 122, layout.contentBottom() - 60, 52, 20)
+                .bounds(layout.programLeft() + 6 + (actionButtonWidth + 2) * 2, actionButtonY, actionButtonWidth, 20)
                 .build());
         this.addRenderableWidget(Button.builder(Component.literal("Delete"), ignored -> this.removeSelectedBlock())
-                .bounds(layout.programLeft() + 178, layout.contentBottom() - 60, 62, 20)
+                .bounds(layout.programLeft() + 6 + (actionButtonWidth + 2) * 3, actionButtonY, actionButtonWidth, 20)
                 .build());
 
         if (this.blockListScroll > 0) {
@@ -130,7 +161,7 @@ public final class NoCodeBuilderScreen extends Screen {
                         this.blockListScroll--;
                         this.init();
                     })
-                    .bounds(layout.programRight() - 28, layout.contentTop() + 16, 18, 18)
+                    .bounds(layout.programRight() - 26, layout.contentTop() + 4, 18, 18)
                     .build());
         }
         if (this.blockListScroll + layout.visibleRows() < this.program.blocks().size()) {
@@ -138,38 +169,40 @@ public final class NoCodeBuilderScreen extends Screen {
                         this.blockListScroll++;
                         this.init();
                     })
-                    .bounds(layout.programRight() - 28, layout.contentBottom() - 86, 18, 18)
+                    .bounds(layout.programRight() - 26, actionButtonY - 22, 18, 18)
                     .build());
         }
 
-        int rowY = layout.contentTop() + 40;
+        int rowY = layout.contentTop() + 24;
         for (int row = 0; row < layout.visibleRows(); row++) {
             final int blockIndex = this.blockListScroll + row;
             if (blockIndex >= this.program.blocks().size()) {
                 break;
             }
             final String prefix = blockIndex == this.selectedBlockIndex ? "> " : "  ";
-            final String label = prefix + this.font.plainSubstrByWidth(this.program.blocks().get(blockIndex).summary(), layout.programWidth() - 38);
+            final String label = prefix + this.font.plainSubstrByWidth(this.program.blocks().get(blockIndex).summary(), layout.programWidth() - 36);
             final int targetIndex = blockIndex;
             this.addRenderableWidget(Button.builder(Component.literal(label), ignored -> {
                         this.selectedBlockIndex = targetIndex;
                         this.init();
                     })
-                    .bounds(layout.programLeft() + 10, rowY, layout.programWidth() - 20, 20)
+                    .bounds(layout.programLeft() + 6, rowY, layout.programWidth() - 12, 20)
                     .build());
             rowY += 22;
         }
 
         this.buildDetailWidgets(layout);
 
+        final int bottomY = layout.panelBottom() - 26;
+        final int applyRunWidth = Math.min(118, Math.max(72, (layout.panelWidth() - 130) / 2));
         final Button applyButton = this.addRenderableWidget(Button.builder(Component.literal("Use In Editor"), ignored -> this.applyProgram(false))
-                .bounds(layout.panelLeft() + layout.panelWidth() - 254, layout.panelBottom() - 28, 118, 20)
+                .bounds(layout.panelLeft() + layout.panelWidth() - applyRunWidth * 2 - 16, bottomY, applyRunWidth, 20)
                 .build());
         final Button runButton = this.addRenderableWidget(Button.builder(Component.literal("Use And Run"), ignored -> this.applyProgram(true))
-                .bounds(layout.panelLeft() + layout.panelWidth() - 132, layout.panelBottom() - 28, 118, 20)
+                .bounds(layout.panelLeft() + layout.panelWidth() - applyRunWidth - 8, bottomY, applyRunWidth, 20)
                 .build());
         this.addRenderableWidget(Button.builder(Component.literal("Cancel"), ignored -> this.onClose())
-                .bounds(layout.panelLeft() + 12, layout.panelBottom() - 28, 90, 20)
+                .bounds(layout.panelLeft() + 8, bottomY, Math.min(80, Math.max(50, layout.panelWidth() - applyRunWidth * 2 - 28)), 20)
                 .build());
         applyButton.active = this.editable;
         runButton.active = this.editable;
@@ -182,6 +215,39 @@ public final class NoCodeBuilderScreen extends Screen {
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean mouseScrolled(final double mouseX, final double mouseY, final double scrollX, final double scrollY) {
+        final int direction = (int) Math.signum(scrollY);
+        if (direction == 0) {
+            return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        }
+
+        final Layout layout = this.layout();
+        if (mouseX >= layout.catalogLeft() && mouseX <= layout.catalogRight()
+                && mouseY >= layout.contentTop() && mouseY <= layout.contentBottom()) {
+            final int maxScroll = Math.max(0, NoCodeBlockKind.values().length - layout.catalogVisibleRows());
+            final int newScroll = Mth.clamp(this.catalogScroll - direction, 0, maxScroll);
+            if (newScroll != this.catalogScroll) {
+                this.catalogScroll = newScroll;
+                this.init();
+                return true;
+            }
+        }
+
+        if (mouseX >= layout.programLeft() && mouseX <= layout.programRight()
+                && mouseY >= layout.contentTop() && mouseY <= layout.contentBottom()) {
+            final int maxScroll = Math.max(0, this.program.blocks().size() - layout.visibleRows());
+            final int newScroll = Mth.clamp(this.blockListScroll - direction, 0, maxScroll);
+            if (newScroll != this.blockListScroll) {
+                this.blockListScroll = newScroll;
+                this.init();
+                return true;
+            }
+        }
+
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
     @Override
@@ -232,13 +298,15 @@ public final class NoCodeBuilderScreen extends Screen {
         graphics.drawString(this.font, Component.literal("Details"), layout.detailLeft() + 12, layout.contentTop() + 6, SECTION_COLOR, false);
 
         final NoCodeBlock selectedBlock = this.selectedBlock();
+        final int detailRight = layout.detailLeft() + layout.detailWidth();
+        graphics.enableScissor(layout.detailLeft(), layout.contentTop(), detailRight, layout.contentBottom());
         if (selectedBlock == null) {
-            graphics.drawString(this.font,
-                    Component.literal("No blocks yet. Add one from the left column or load a template above."),
-                    layout.detailLeft() + 12,
-                    layout.contentTop() + 48,
-                    INFO_COLOR,
-                    false);
+            final int wrapWidth = layout.detailWidth() - 24;
+            int hintY = layout.contentTop() + 48;
+            for (final var line : this.font.split(Component.literal("No blocks yet. Add one from the left column or load a template above."), wrapWidth)) {
+                graphics.drawString(this.font, line, layout.detailLeft() + 12, hintY, INFO_COLOR, false);
+                hintY += this.font.lineHeight + 2;
+            }
         } else {
             graphics.drawString(this.font,
                     Component.literal(selectedBlock.kind().label()),
@@ -254,6 +322,7 @@ public final class NoCodeBuilderScreen extends Screen {
                     false);
             this.renderDetailValues(graphics, layout, selectedBlock);
         }
+        graphics.disableScissor();
 
         if (!this.editable) {
             graphics.drawString(this.font,
@@ -264,21 +333,26 @@ public final class NoCodeBuilderScreen extends Screen {
                     false);
         }
 
-        super.render(graphics, mouseX, mouseY, partialTick);
+        // Skip Screen.render here; it would repaint the vanilla blurred/menu background over this custom UI.
+        // Instead, only render the widgets (Buttons, EditBoxes).
+        for (final net.minecraft.client.gui.components.Renderable renderable : this.renderables) {
+            renderable.render(graphics, mouseX, mouseY, partialTick);
+        }
     }
 
     private void buildTemplateButtons(final Layout layout) {
         final int gap = 6;
         final int availableWidth = layout.panelWidth() - 24;
-        final int buttonWidth = (availableWidth - gap * (TEMPLATE_COLUMNS - 1)) / TEMPLATE_COLUMNS;
+        final int columns = layout.templateColumns();
+        final int buttonWidth = Math.max(40, (availableWidth - gap * (columns - 1)) / columns);
         final int startX = layout.panelLeft() + 12;
         final int startY = layout.panelTop() + 68;
         int index = 0;
         for (final NoCodeBuilderTemplate template : NoCodeBuilderTemplate.values()) {
-            final int row = index / TEMPLATE_COLUMNS;
-            final int column = index % TEMPLATE_COLUMNS;
+            final int row = index / columns;
+            final int column = index % columns;
             final Button button = this.addRenderableWidget(Button.builder(Component.literal(template.buttonLabel()), ignored -> this.loadTemplate(template))
-                    .bounds(startX + column * (buttonWidth + gap), startY + row * 24, buttonWidth, 20)
+                    .bounds(startX + column * (buttonWidth + gap), startY + row * 22, buttonWidth, 20)
                     .build());
             button.active = this.editable;
             index++;
@@ -488,7 +562,7 @@ public final class NoCodeBuilderScreen extends Screen {
                 .bounds(detailLeft, fieldTop, 20, 20)
                 .build());
         this.addRenderableWidget(Button.builder(Component.literal(">"), ignored -> this.cycleSelectedDevice(1))
-                .bounds(detailLeft + 238, fieldTop, 20, 20)
+                .bounds(detailLeft + layout.detailWidth() - 44, fieldTop, 20, 20)
                 .build());
         int rowTop = fieldTop + 40;
         if (includePrimarySide) {
@@ -496,7 +570,7 @@ public final class NoCodeBuilderScreen extends Screen {
                 .bounds(detailLeft, rowTop, 20, 20)
                     .build());
             this.addRenderableWidget(Button.builder(Component.literal(">"), ignored -> this.cycleSelectedSide(1))
-                .bounds(detailLeft + 238, rowTop, 20, 20)
+                .bounds(detailLeft + layout.detailWidth() - 44, rowTop, 20, 20)
                     .build());
             rowTop += 40;
         }
@@ -505,7 +579,7 @@ public final class NoCodeBuilderScreen extends Screen {
                 .bounds(detailLeft, rowTop, 20, 20)
                 .build());
             this.addRenderableWidget(Button.builder(Component.literal(">"), ignored -> this.cycleSelectedTargetDevice(1))
-                .bounds(detailLeft + 238, rowTop, 20, 20)
+                .bounds(detailLeft + layout.detailWidth() - 44, rowTop, 20, 20)
                 .build());
             rowTop += 40;
         }
@@ -514,7 +588,7 @@ public final class NoCodeBuilderScreen extends Screen {
                 .bounds(detailLeft, rowTop, 20, 20)
                     .build());
             this.addRenderableWidget(Button.builder(Component.literal(">"), ignored -> this.cycleSelectedTargetSide(1))
-                .bounds(detailLeft + 238, rowTop, 20, 20)
+                .bounds(detailLeft + layout.detailWidth() - 44, rowTop, 20, 20)
                     .build());
         }
     }
@@ -1165,7 +1239,7 @@ public final class NoCodeBuilderScreen extends Screen {
         } else {
             this.selectedBlockIndex = Math.max(0, Math.min(this.selectedBlockIndex, this.program.blocks().size() - 1));
         }
-        this.blockListScroll = Math.max(0, Math.min(this.blockListScroll, Math.max(0, this.program.blocks().size() - 1)));
+        this.blockListScroll = Math.max(0, Math.min(this.blockListScroll, Math.max(0, this.program.blocks().size() - this.layout().visibleRows())));
         this.ensureSelectedVisible();
     }
 
@@ -1440,29 +1514,30 @@ public final class NoCodeBuilderScreen extends Screen {
     }
 
     private Layout layout() {
-        final int margin = 18;
+        final int margin = Math.max(6, Math.min(18, (this.width - 320) / 4));
         final int panelLeft = margin;
         final int panelTop = margin;
-        final int panelWidth = this.width - margin * 2;
-        final int panelHeight = this.height - margin * 2;
-        final int headerHeight = 86 + this.templateRowCount() * 24;
-        final int footerHeight = 38;
+        final int panelWidth = Math.max(320, this.width - margin * 2);
+        final int panelHeight = Math.max(150, this.height - margin * 2);
+        final int templateCols = Math.max(3, Math.min(7, (panelWidth - 24 + 6) / 84));
+        final int templateRows = Math.max(1, (NoCodeBuilderTemplate.values().length + templateCols - 1) / templateCols);
+        final int headerHeight = 78 + templateRows * 22;
+        final int footerHeight = 36;
         final int contentTop = panelTop + headerHeight;
-        final int contentHeight = panelHeight - headerHeight - footerHeight;
-        final int catalogWidth = 166;
-        final int programWidth = 258;
-        final int gap = 8;
+        final int contentHeight = Math.max(60, panelHeight - headerHeight - footerHeight);
+        final int gap = 6;
+        final int availableCols = Math.max(60, panelWidth - 16 - gap * 2);
+        final int catalogWidth = Math.max(88, Math.min(160, availableCols * 25 / 100));
+        final int programWidth = Math.max(110, Math.min(240, availableCols * 38 / 100));
         final int catalogLeft = panelLeft + 8;
         final int programLeft = catalogLeft + catalogWidth + gap;
         final int detailLeft = programLeft + programWidth + gap;
-        final int detailWidth = panelLeft + panelWidth - detailLeft - 8;
+        final int detailWidth = Math.max(90, panelLeft + panelWidth - detailLeft - 8);
+        final int visibleRows = Math.min(MAX_VISIBLE_ROWS, Math.max(2, (contentHeight - 88) / 22));
+        final int catalogVisibleRows = Math.max(2, (contentHeight - 34) / 22);
         return new Layout(panelLeft, panelTop, panelWidth, panelHeight, contentTop, contentHeight,
                 catalogLeft, catalogWidth, programLeft, programWidth, detailLeft, detailWidth,
-                Math.min(MAX_VISIBLE_ROWS, Math.max(4, (contentHeight - 104) / 22)));
-    }
-
-    private int templateRowCount() {
-        return Math.max(1, (NoCodeBuilderTemplate.values().length + TEMPLATE_COLUMNS - 1) / TEMPLATE_COLUMNS);
+                visibleRows, catalogVisibleRows, templateCols);
     }
 
     private void drawPanel(final GuiGraphics graphics, final int left, final int top, final int width, final int height) {
@@ -1485,13 +1560,19 @@ public final class NoCodeBuilderScreen extends Screen {
                           int programWidth,
                           int detailLeft,
                           int detailWidth,
-                          int visibleRows) {
+                          int visibleRows,
+                          int catalogVisibleRows,
+                          int templateColumns) {
         private int panelBottom() {
             return this.panelTop + this.panelHeight;
         }
 
         private int contentBottom() {
             return this.contentTop + this.contentHeight;
+        }
+
+        private int catalogRight() {
+            return this.catalogLeft + this.catalogWidth;
         }
 
         private int programRight() {

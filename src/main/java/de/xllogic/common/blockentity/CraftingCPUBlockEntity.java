@@ -25,8 +25,10 @@ public final class CraftingCPUBlockEntity extends NamedNetworkEndpointBlockEntit
     private static final int RECIPE_WIDTH = 3;
     private static final int RECIPE_HEIGHT = 3;
     private static final int RECIPE_SLOT_COUNT = RECIPE_WIDTH * RECIPE_HEIGHT;
+    private static final int BUSY_COOLDOWN_TICKS = 5;
 
     private boolean busy;
+    private int busyTicks;
     private int queuedJobs = 1;
     private final NonNullList<ItemStack> recipeSlots = NonNullList.withSize(RECIPE_SLOT_COUNT, ItemStack.EMPTY);
 
@@ -44,16 +46,32 @@ public final class CraftingCPUBlockEntity extends NamedNetworkEndpointBlockEntit
     }
 
     public void setBusy(final boolean busy) {
-        if (this.busy == busy) {
-            return;
+        if (busy) {
+            this.busyTicks = BUSY_COOLDOWN_TICKS;
+            if (!this.busy) {
+                this.busy = true;
+                this.markStateChanged();
+            }
+        } else {
+            if (this.busyTicks <= 0 && this.busy) {
+                this.busy = false;
+                this.markStateChanged();
+            }
         }
-
-        this.busy = busy;
-        this.markStateChanged();
     }
 
     public void toggleBusy() {
         this.setBusy(!this.busy);
+    }
+
+    public void serverTick() {
+        if (this.busyTicks > 0) {
+            this.busyTicks--;
+            if (this.busyTicks <= 0 && this.busy) {
+                this.busy = false;
+                this.markStateChanged();
+            }
+        }
     }
 
     public int getQueuedJobs() {
@@ -499,7 +517,7 @@ public final class CraftingCPUBlockEntity extends NamedNetworkEndpointBlockEntit
             int remaining = required.getCount();
             for (int slot = 0; slot < input.getSlots() && remaining > 0; slot++) {
                 final ItemStack current = input.getStackInSlot(slot);
-                if (current.isEmpty() || current.getItem() != required.getItem()) {
+                if (current.isEmpty() || !ItemStack.isSameItemSameComponents(current, required)) {
                     continue;
                 }
 
@@ -520,7 +538,7 @@ public final class CraftingCPUBlockEntity extends NamedNetworkEndpointBlockEntit
             int remaining = required.getCount();
             for (int slot = 0; slot < input.getSlots() && remaining > 0; slot++) {
                 final ItemStack current = input.getStackInSlot(slot);
-                if (current.isEmpty() || current.getItem() != required.getItem()) {
+                if (current.isEmpty() || !ItemStack.isSameItemSameComponents(current, required)) {
                     continue;
                 }
 
@@ -574,7 +592,7 @@ public final class CraftingCPUBlockEntity extends NamedNetworkEndpointBlockEntit
             int remaining = required.getCount();
             for (int slot = 0; slot < simulatedSlots.size() && remaining > 0; slot++) {
                 final ItemStack current = simulatedSlots.get(slot);
-                if (current.isEmpty() || current.getItem() != required.getItem()) {
+                if (current.isEmpty() || !ItemStack.isSameItemSameComponents(current, required)) {
                     continue;
                 }
 

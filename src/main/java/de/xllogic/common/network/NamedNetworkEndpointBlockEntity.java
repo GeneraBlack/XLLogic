@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -256,6 +257,14 @@ public abstract class NamedNetworkEndpointBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(final HolderLookup.Provider registries) {
         return this.saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public void onDataPacket(final Connection net, final ClientboundBlockEntityDataPacket pkt, final HolderLookup.Provider lookupProvider) {
+        final CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            this.loadCustomOnly(tag, lookupProvider);
+        }
     }
 
     private static String sanitizeOrFallback(final String rawName, final String fallback) {

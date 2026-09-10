@@ -27,7 +27,7 @@ public final class XLServerConfig {
     private static final int DEFAULT_EDITOR_LEASE_TIMEOUT_TICKS = 100;
     private static final int MIN_EDITOR_LEASE_TIMEOUT_TICKS = 20;
     private static final int MAX_EDITOR_LEASE_TIMEOUT_TICKS = 2_400;
-    private static final int DEFAULT_PERSISTENT_RESUME_INTERVAL_TICKS = 20;
+    private static final int DEFAULT_PERSISTENT_RESUME_INTERVAL_TICKS = 1;
     private static final int MIN_PERSISTENT_RESUME_INTERVAL_TICKS = 1;
     private static final int MAX_PERSISTENT_RESUME_INTERVAL_TICKS = 2_400;
     private static final int DEFAULT_HOST_CALL_DIAGNOSTICS_THRESHOLD_MILLIS = 25;

@@ -188,6 +188,18 @@ The repository already includes automated coverage for important subsystems.
 - JUnit tests cover runtime guardrails, defaults, editor logic, screen layout, and no-code generation.
 - NeoForge GameTests cover network topology, bus behavior, recovery flows, editor lease handoff, restart/load behavior, and related multiplayer/runtime edge cases.
 
+## Release automation
+
+The repository includes a GitHub Actions release workflow at `.github/workflows/release-curseforge.yml`.
+
+- Trigger it either by publishing a GitHub Release or manually via `workflow_dispatch`.
+- Manual runs require a tag that matches `mod_version` from `gradle.properties`, for example `v0.1.0`.
+- The workflow validates the release with `gradlew test` and `gradlew runGameTestServer`, then builds the bundled `shadowJar` artifact and publishes it to GitHub Releases and CurseForge.
+- If the GitHub Release body is empty, the workflow uses `docs/meta/GITHUB_RELEASE_<mod_version>.md` automatically. Manual runs can override that with the optional `release_notes_file` input.
+- Repository configuration requires a CurseForge token in one of `CURSEFORGE_API_TOKEN`, `CURSEFORGE_TOKEN`, or `PUBLISH_CURSEFORGE_TOKEN`, plus a project id in `CURSEFORGE_PROJECT_ID` or `CURSEFORGE_ID` as a repository variable or secret.
+
+The CurseForge project-page copy remains in `docs/meta/CURSEFORGE_DESCRIPTION.md` and `docs/meta/CURSEFORGE_SHORT_DESCRIPTION.txt`.
+
 ## Near-term focus
 
 The most sensible next steps from the current state are:

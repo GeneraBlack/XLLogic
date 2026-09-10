@@ -62,25 +62,32 @@ public final class GuideBookScreen extends Screen {
         this.pageButtons.clear();
 
         final Layout layout = this.layout();
+        final int availableNavHeight = layout.height() - 42;
+        final int pageCount = this.pages.size();
+        final int buttonHeight = Math.max(16, Math.min(SECTION_BUTTON_HEIGHT, (availableNavHeight - SECTION_BUTTON_SPACING * (pageCount - 1)) / pageCount));
+        final int buttonSpacing = Math.max(1, Math.min(SECTION_BUTTON_SPACING, (availableNavHeight - buttonHeight * pageCount) / Math.max(1, pageCount - 1)));
+
         int buttonY = layout.top() + 34;
-        for (int index = 0; index < this.pages.size(); index++) {
+        for (int index = 0; index < pageCount; index++) {
             final int targetIndex = index;
             final String label = this.font.plainSubstrByWidth(this.pages.get(index).title(), SECTION_BUTTON_WIDTH - 10);
             final Button button = Button.builder(Component.literal(label), ignored -> this.setPage(targetIndex))
-                    .bounds(layout.navLeft() + 8, buttonY, SECTION_BUTTON_WIDTH, SECTION_BUTTON_HEIGHT)
+                    .bounds(layout.navLeft() + 8, buttonY, SECTION_BUTTON_WIDTH, buttonHeight)
                     .build();
             this.pageButtons.add(this.addRenderableWidget(button));
-            buttonY += SECTION_BUTTON_HEIGHT + SECTION_BUTTON_SPACING;
+            buttonY += buttonHeight + buttonSpacing;
         }
 
+        final int buttonYBottom = layout.bottom() - 26;
+        final int actionWidth = Math.min(70, Math.max(48, (layout.contentWidth() - 24) / 3));
         this.previousButton = this.addRenderableWidget(Button.builder(Component.translatable("screen.xllogic.guide_book.previous"), ignored -> this.previousPage())
-                .bounds(layout.contentLeft() + 8, layout.bottom() - 28, 70, 20)
+                .bounds(layout.contentLeft() + 6, buttonYBottom, actionWidth, 20)
                 .build());
         this.nextButton = this.addRenderableWidget(Button.builder(Component.translatable("screen.xllogic.guide_book.next"), ignored -> this.nextPage())
-                .bounds(layout.contentRight() - 148, layout.bottom() - 28, 70, 20)
+                .bounds(layout.contentRight() - actionWidth * 2 - 8, buttonYBottom, actionWidth, 20)
                 .build());
         this.addRenderableWidget(Button.builder(Component.translatable("screen.xllogic.guide_book.done"), ignored -> this.onClose())
-                .bounds(layout.contentRight() - 74, layout.bottom() - 28, 66, 20)
+                .bounds(layout.contentRight() - actionWidth - 4, buttonYBottom, actionWidth, 20)
                 .build());
         this.updateControls();
     }
@@ -193,7 +200,10 @@ public final class GuideBookScreen extends Screen {
             graphics.drawString(this.font, scrollLabel, layout.contentRight() - this.font.width(scrollLabel) - 10, layout.bottom() - 42, INFO_COLOR, false);
         }
 
-        super.render(graphics, mouseX, mouseY, partialTick);
+        // Skip Screen.render here; it would repaint the vanilla blurred/menu background over this custom UI.
+        for (final net.minecraft.client.gui.components.Renderable renderable : this.renderables) {
+            renderable.render(graphics, mouseX, mouseY, partialTick);
+        }
     }
 
     private void drawPanel(final GuiGraphics graphics, final int left, final int top, final int width, final int height) {
@@ -348,7 +358,7 @@ public final class GuideBookScreen extends Screen {
     }
 
     private Layout layout() {
-        final int panelWidth = Math.min(this.width - 24, 492);
+        final int panelWidth = Math.max(250, Math.min(this.width - 24, 492));
         final int panelHeight = Math.min(this.height - 24, 300);
         final int left = (this.width - panelWidth) / 2;
         final int top = Math.max(12, (this.height - panelHeight) / 2);

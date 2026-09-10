@@ -120,6 +120,12 @@ public final class XLApiBlockEntity extends NamedNetworkEndpointBlockEntity {
         return List.copyOf(resolved);
     }
 
+    public static void clearRelaysForLevel(final Level level) {
+        if (level != null) {
+            ACTIVE_RELAYS.remove(level.dimension().location().toString());
+        }
+    }
+
     @Override
     public boolean allowsNetworkPassthrough() {
         return this.relayEnabled;

@@ -266,15 +266,15 @@ public final class ScreenBlock extends AbstractDeviceBlock {
 
         if (player.isShiftKeyDown()) {
             if (screen.retreatPageCursor()) {
-                player.sendSystemMessage(Component.literal("Screen moved toward newer output. The active page is shown in the panel footer."));
+                sendFeedback(player, "Screen moved toward newer output. The active page is shown in the panel footer.");
             } else {
-                player.sendSystemMessage(Component.literal("Screen is already on its newest page."));
+                sendFeedback(player, "Screen is already on its newest page.");
             }
             return InteractionResult.SUCCESS;
         }
 
         screen.advancePageCursor();
-        player.sendSystemMessage(Component.literal("Screen moved toward older output. The active page is shown in the panel footer."));
+        sendFeedback(player, "Screen moved toward older output. The active page is shown in the panel footer.");
         return InteractionResult.SUCCESS;
     }
 
@@ -283,28 +283,28 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         if (screen.hasFocusedOutput()) {
             if (focusableEntries.isEmpty()) {
                 screen.clearFocusedOutput();
-                player.sendSystemMessage(Component.literal("No detailed table or card output remains available to keep focused."));
+                sendFeedback(player, "No detailed table or card output remains available to keep focused.");
                 return InteractionResult.SUCCESS;
             }
 
             if (player.isShiftKeyDown()) {
                 screen.clearFocusedOutput();
-                player.sendSystemMessage(Component.literal("Detailed focus cleared. Click a visible table or card to focus it again."));
+                sendFeedback(player, "Detailed focus cleared. Click a visible table or card to focus it again.");
                 return InteractionResult.SUCCESS;
             }
-            player.sendSystemMessage(Component.literal("Focused output uses directional clicks inside the visible detail area. Shift-right-click here to leave focus."));
+            sendFeedback(player, "Focused output uses directional clicks inside the visible detail area. Shift-right-click here to leave focus.");
             return InteractionResult.SUCCESS;
         }
 
         final List<ComputerOutputEntry> outputEntries = screen.resolveDisplayOutputEntries(linkedComputer.getRuntimeState());
         if (focusableEntries.isEmpty()) {
-            player.sendSystemMessage(Component.literal("No detailed table or card output is available to focus."));
+            sendFeedback(player, "No detailed table or card output is available to focus.");
             return InteractionResult.SUCCESS;
         }
 
         final FocusHit focusHit = resolveVisibleFocusHit(screen, outputEntries, zone);
         if (focusHit == null) {
-            player.sendSystemMessage(Component.literal("No detailed table or card is under this part of the visible screen."));
+            sendFeedback(player, "No detailed table or card is under this part of the visible screen.");
             return InteractionResult.SUCCESS;
         }
 
@@ -316,7 +316,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
     private InteractionResult handleScrollBand(final ScreenBlockEntity screen, final ComputerBlockEntity linkedComputer, final Player player, final FrontFaceZone zone) {
         final List<ComputerOutputEntry> focusableEntries = focusableEntries(screen, linkedComputer);
         if (!screen.hasFocusedOutput() || focusableEntries.isEmpty()) {
-            player.sendSystemMessage(Component.literal("No detailed output is focused. Use the middle screen zone to focus a table or card first."));
+            sendFeedback(player, "No detailed output is focused. Use the middle screen zone to focus a table or card first.");
             return InteractionResult.SUCCESS;
         }
 
@@ -329,7 +329,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
             final int before = viewport.columnOffset();
             final int target = clamp(before + delta, 0, viewport.maxColumnOffset());
             if (target == before) {
-                player.sendSystemMessage(Component.literal(TABLE_COLUMN_LIMIT_MESSAGE));
+                sendFeedback(player, TABLE_COLUMN_LIMIT_MESSAGE);
                 return InteractionResult.SUCCESS;
             }
             screen.focusOutput(focusedIndex, viewport.fieldOffset(), viewport.rowOffset(), target);
@@ -341,7 +341,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
             final int before = viewport.rowOffset();
             final int target = clamp(before + delta, 0, viewport.maxRowOffset());
             if (target == before) {
-                player.sendSystemMessage(Component.literal(TABLE_ROW_LIMIT_MESSAGE));
+                sendFeedback(player, TABLE_ROW_LIMIT_MESSAGE);
                 return InteractionResult.SUCCESS;
             }
             screen.focusOutput(focusedIndex, viewport.fieldOffset(), target, viewport.columnOffset());
@@ -352,7 +352,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final int before = viewport.fieldOffset();
         final int target = clamp(before + delta, 0, viewport.maxFieldOffset());
         if (target == before) {
-            player.sendSystemMessage(Component.literal(CARD_FIELD_LIMIT_MESSAGE));
+            sendFeedback(player, CARD_FIELD_LIMIT_MESSAGE);
             return InteractionResult.SUCCESS;
         }
 
@@ -382,7 +382,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final int before = viewport.fieldOffset();
         final int target = clamp(before + direction * step, 0, viewport.maxFieldOffset());
         if (target == before) {
-            player.sendSystemMessage(Component.literal(CARD_FIELD_LIMIT_MESSAGE));
+            sendFeedback(player, CARD_FIELD_LIMIT_MESSAGE);
             return InteractionResult.SUCCESS;
         }
 
@@ -397,7 +397,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final int before = viewport.columnOffset();
         final int target = clamp(before + direction * step, 0, viewport.maxColumnOffset());
         if (target == before) {
-            player.sendSystemMessage(Component.literal(TABLE_COLUMN_LIMIT_MESSAGE));
+            sendFeedback(player, TABLE_COLUMN_LIMIT_MESSAGE);
             return InteractionResult.SUCCESS;
         }
 
@@ -412,7 +412,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final int before = viewport.rowOffset();
         final int target = clamp(before + direction * step, 0, viewport.maxRowOffset());
         if (target == before) {
-            player.sendSystemMessage(Component.literal(TABLE_ROW_LIMIT_MESSAGE));
+            sendFeedback(player, TABLE_ROW_LIMIT_MESSAGE);
             return InteractionResult.SUCCESS;
         }
 
@@ -430,7 +430,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final List<ComputerOutputEntry> focusableEntries = focusableEntries(screen, linkedComputer);
         if (focusableEntries.isEmpty()) {
             screen.clearFocusedOutput();
-            player.sendSystemMessage(Component.literal("No detailed table or card output remains available to keep focused."));
+            sendFeedback(player, "No detailed table or card output remains available to keep focused.");
             return InteractionResult.SUCCESS;
         }
 
@@ -449,14 +449,14 @@ public final class ScreenBlock extends AbstractDeviceBlock {
                                                          final ComputerOutputEntry focusedEntry, final int focusedIndex, final FocusedViewportIntent intent) {
         if (intent.clearFocus()) {
             screen.clearFocusedOutput();
-            player.sendSystemMessage(Component.literal("Detailed focus cleared. Click a visible table or card to focus it again."));
+            sendFeedback(player, "Detailed focus cleared. Click a visible table or card to focus it again.");
             return InteractionResult.SUCCESS;
         }
 
         if (intent.retargetHit() != null) {
             final FocusHit hit = intent.retargetHit();
             if (!screen.focusOutput(hit.focusCursor(), hit.fieldOffset(), hit.rowOffset(), hit.columnOffset())) {
-                player.sendSystemMessage(Component.literal("Focused output already targets this visible area."));
+                sendFeedback(player, "Focused output already targets this visible area.");
                 return InteractionResult.SUCCESS;
             }
 
@@ -476,7 +476,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final int before = viewport.fieldOffset();
         final int target = clamp(before + delta, 0, viewport.maxFieldOffset());
         if (target == before) {
-            player.sendSystemMessage(Component.literal(CARD_FIELD_LIMIT_MESSAGE));
+            sendFeedback(player, CARD_FIELD_LIMIT_MESSAGE);
             return InteractionResult.SUCCESS;
         }
 
@@ -490,7 +490,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final int before = viewport.rowOffset();
         final int target = clamp(before + delta, 0, viewport.maxRowOffset());
         if (target == before) {
-            player.sendSystemMessage(Component.literal(TABLE_ROW_LIMIT_MESSAGE));
+            sendFeedback(player, TABLE_ROW_LIMIT_MESSAGE);
             return InteractionResult.SUCCESS;
         }
 
@@ -504,7 +504,7 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final int before = viewport.columnOffset();
         final int target = clamp(before + delta, 0, viewport.maxColumnOffset());
         if (target == before) {
-            player.sendSystemMessage(Component.literal(TABLE_COLUMN_LIMIT_MESSAGE));
+            sendFeedback(player, TABLE_COLUMN_LIMIT_MESSAGE);
             return InteractionResult.SUCCESS;
         }
 
@@ -521,20 +521,24 @@ public final class ScreenBlock extends AbstractDeviceBlock {
         final ComputerOutputEntry entry = focusableEntries.get(clampedCursor);
         final String summary = entry.summaryLine();
         final String suffix = summary.isBlank() ? entry.displayLabel() : summary;
-        player.sendSystemMessage(Component.literal("Focused " + entry.displayLabel() + " " + (clampedCursor + 1) + "/" + focusableEntries.size() + ": " + suffix));
+        sendFeedback(player, "Focused " + entry.displayLabel() + " " + (clampedCursor + 1) + "/" + focusableEntries.size() + ": " + suffix);
     }
 
     private void sendFocusedViewportMessage(final Player player, final FocusViewport viewport) {
         if (viewport.entry().tableKind()) {
             if (viewport.rowCount() <= 0) {
-                player.sendSystemMessage(Component.literal("Focused table columns now start at " + (viewport.columnOffset() + 1) + "."));
+                sendFeedback(player, "Focused table columns now start at " + (viewport.columnOffset() + 1) + ".");
             } else {
-                player.sendSystemMessage(Component.literal("Focused table now starts at row " + (viewport.rowOffset() + 1) + ", column " + (viewport.columnOffset() + 1) + "."));
+                sendFeedback(player, "Focused table now starts at row " + (viewport.rowOffset() + 1) + ", column " + (viewport.columnOffset() + 1) + ".");
             }
             return;
         }
 
-        player.sendSystemMessage(Component.literal("Focused card now starts at field " + (viewport.fieldOffset() + 1) + "."));
+        sendFeedback(player, "Focused card now starts at field " + (viewport.fieldOffset() + 1) + ".");
+    }
+
+    private static void sendFeedback(final Player player, final String message) {
+        player.displayClientMessage(Component.literal(message), true);
     }
 
     private static List<ComputerOutputEntry> focusableEntries(final ScreenBlockEntity screen, final ComputerBlockEntity linkedComputer) {

@@ -36,7 +36,7 @@ public final class XLCreativeTabs {
                 output.accept(XLBlocks.BLUE_REDSTONE_CABLE.get());
                 output.accept(XLBlocks.BROWN_REDSTONE_CABLE.get());
                 output.accept(XLBlocks.GREEN_REDSTONE_CABLE.get());
-                output.accept(XLBlocks.COLORED_REDSTONE_CABLE.get());
+                output.accept(XLBlocks.RED_REDSTONE_CABLE.get());
                 output.accept(XLBlocks.BLACK_REDSTONE_CABLE.get());
                 output.accept(XLBlocks.LIGHT_SENSOR.get());
                 output.accept(XLBlocks.CLOCK.get());

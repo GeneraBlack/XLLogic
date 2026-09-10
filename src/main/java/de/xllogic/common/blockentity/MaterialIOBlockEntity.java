@@ -250,7 +250,7 @@ public final class MaterialIOBlockEntity extends NamedNetworkEndpointBlockEntity
     @Override
     protected void loadAdditional(final CompoundTag tag, final HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.mode = MaterialIOMode.valueOf(tag.getString(TAG_MODE));
+        this.mode = tag.contains(TAG_MODE) ? MaterialIOMode.valueOf(tag.getString(TAG_MODE)) : MaterialIOMode.HYBRID;
         this.itemInputEnabled = !tag.contains(TAG_ITEM_INPUT_ENABLED) || tag.getBoolean(TAG_ITEM_INPUT_ENABLED);
         this.itemOutputEnabled = !tag.contains(TAG_ITEM_OUTPUT_ENABLED) || tag.getBoolean(TAG_ITEM_OUTPUT_ENABLED);
         this.fluidInputEnabled = !tag.contains(TAG_FLUID_INPUT_ENABLED) || tag.getBoolean(TAG_FLUID_INPUT_ENABLED);
@@ -344,7 +344,7 @@ public final class MaterialIOBlockEntity extends NamedNetworkEndpointBlockEntity
             return 0;
         }
 
-        final FluidStack requested = new FluidStack(available.getFluid(), Math.min(amount, available.getAmount()));
+        final FluidStack requested = available.copyWithAmount(Math.min(amount, available.getAmount()));
         final FluidStack simulatedDrain = source.drain(requested, IFluidHandler.FluidAction.SIMULATE);
         if (simulatedDrain.isEmpty()) {
             return 0;
@@ -355,7 +355,7 @@ public final class MaterialIOBlockEntity extends NamedNetworkEndpointBlockEntity
             return 0;
         }
 
-        final FluidStack drained = source.drain(new FluidStack(simulatedDrain.getFluid(), accepted), IFluidHandler.FluidAction.EXECUTE);
+        final FluidStack drained = source.drain(simulatedDrain.copyWithAmount(accepted), IFluidHandler.FluidAction.EXECUTE);
         if (drained.isEmpty()) {
             return 0;
         }

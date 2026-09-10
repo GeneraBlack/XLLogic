@@ -32,6 +32,18 @@ public final class CraftingCPUBlock extends AbstractDeviceBlock {
     }
 
     @Override
+    public <T extends BlockEntity> net.minecraft.world.level.block.entity.BlockEntityTicker<T> getTicker(final Level level, final BlockState state, final net.minecraft.world.level.block.entity.BlockEntityType<T> type) {
+        if (level.isClientSide()) {
+            return null;
+        }
+        return (tickLevel, pos, blockState, blockEntity) -> {
+            if (blockEntity instanceof CraftingCPUBlockEntity craftingCpu) {
+                craftingCpu.serverTick();
+            }
+        };
+    }
+
+    @Override
     protected InteractionResult useWithoutItem(final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult) {
         if (!(level.getBlockEntity(pos) instanceof CraftingCPUBlockEntity craftingCpu)) {
             return InteractionResult.PASS;
