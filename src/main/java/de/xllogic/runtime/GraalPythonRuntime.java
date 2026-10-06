@@ -544,6 +544,7 @@ public final class GraalPythonRuntime implements PythonRuntime {
 
     private static Engine createSharedEngine() {
         System.setProperty("polyglotimpl.DisableMultiReleaseCheck", "true");
+        System.setProperty("org.graalvm.python.resources.exclude", ".*\\.(exe|bat|cmd|ps1|sh|csh|fish)$");
         return withRuntimeClassLoader(() -> {
             try {
                 return Engine.newBuilder()

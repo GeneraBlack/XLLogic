@@ -8,6 +8,7 @@ public final class RuntimeFactory {
 
     static {
         System.setProperty("polyglotimpl.DisableMultiReleaseCheck", "true");
+        System.setProperty("org.graalvm.python.resources.exclude", ".*\\.(exe|bat|cmd|ps1|sh|csh|fish)$");
     }
 
     private RuntimeFactory() {

@@ -23,6 +23,7 @@ public final class XLLogicMod {
 
     static {
         System.setProperty("polyglotimpl.DisableMultiReleaseCheck", "true");
+        System.setProperty("org.graalvm.python.resources.exclude", ".*\\.(exe|bat|cmd|ps1|sh|csh|fish)$");
     }
 
     public XLLogicMod(final IEventBus modEventBus, final ModContainer modContainer) {

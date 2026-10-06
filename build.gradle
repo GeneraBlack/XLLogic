@@ -40,6 +40,7 @@ runs {
         workingDirectory project.layout.projectDirectory.dir('run').dir(name)
         jvmArguments.addAll('-XX:+UnlockExperimentalVMOptions', '-XX:+EnableJVMCI')
         systemProperty 'polyglotimpl.DisableMultiReleaseCheck', 'true'
+        systemProperty 'org.graalvm.python.resources.exclude', '.*\\.(exe|bat|cmd|ps1|sh|csh|fish)$'
         modSource project.sourceSets.main
         dependencies {
             runtime project.configurations.libraries
@@ -92,6 +93,30 @@ tasks.named('shadowJar').configure {
     exclude '**/*.sh'
     exclude '**/*.csh'
     exclude '**/*.fish'
+
+    doLast {
+        def jarFile = archiveFile.get().asFile
+        def uri = java.net.URI.create("jar:" + jarFile.toURI())
+        def env = [create: 'false']
+        java.nio.file.FileSystems.newFileSystem(uri, env).withCloseable { fs ->
+            def resDir = fs.getPath('/META-INF/resources')
+            if (java.nio.file.Files.exists(resDir)) {
+                java.nio.file.Files.walk(resDir).each { path ->
+                    def name = path.toString()
+                    if (name.endsWith('.files') || name.endsWith('/files')) {
+                        def lines = java.nio.file.Files.readAllLines(path, java.nio.charset.StandardCharsets.UTF_8)
+                        def filtered = lines.findAll { line ->
+                            !(line =~ /\.(exe|bat|cmd|ps1|sh|csh|fish)\b/)
+                        }
+                        if (filtered.size() != lines.size()) {
+                            java.nio.file.Files.write(path, filtered, java.nio.charset.StandardCharsets.UTF_8)
+                            logger.lifecycle("Filtered {} excluded entries from {}", lines.size() - filtered.size(), name)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 tasks.named('jar').configure {
