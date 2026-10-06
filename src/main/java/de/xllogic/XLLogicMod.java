@@ -21,6 +21,10 @@ public final class XLLogicMod {
     public static final String MOD_ID = "xllogic";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    static {
+        System.setProperty("polyglotimpl.DisableMultiReleaseCheck", "true");
+    }
+
     public XLLogicMod(final IEventBus modEventBus, final ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.SERVER, XLServerConfig.SPEC);
         XLRegistries.register(modEventBus);

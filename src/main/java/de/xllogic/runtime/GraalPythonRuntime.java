@@ -543,12 +543,13 @@ public final class GraalPythonRuntime implements PythonRuntime {
     }
 
     private static Engine createSharedEngine() {
+        System.setProperty("polyglotimpl.DisableMultiReleaseCheck", "true");
         return withRuntimeClassLoader(() -> {
             try {
                 return Engine.newBuilder()
                         .option("engine.WarnInterpreterOnly", "false")
                         .build();
-            } catch (final RuntimeException exception) {
+            } catch (final Throwable exception) {
                 XLLogicMod.LOGGER.warn("Failed to create shared GraalPy engine.", exception);
                 return null;
             }
@@ -739,7 +740,7 @@ public final class GraalPythonRuntime implements PythonRuntime {
                     XLLogicMod.LOGGER.warn("GraalPy engine initialized without python language. Available languages: {}", SHARED_ENGINE.getLanguages().keySet());
                 }
                 return pythonAvailable;
-            } catch (final RuntimeException exception) {
+            } catch (final Throwable exception) {
                 XLLogicMod.LOGGER.warn("Failed to detect GraalPy availability.", exception);
                 return false;
             }

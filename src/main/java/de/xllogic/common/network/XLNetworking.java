@@ -62,9 +62,16 @@ public final class XLNetworking {
     private static final String EXECUTION_STOPPED_MESSAGE = "Execution stopped by user.";
     private static final String AUTO_START_FAILURE_SUMMARY = "Auto-start failed to initialize the persisted Python program.";
     private static final int MAX_EDIT_DISTANCE = 16;
-    private static final PythonRuntime SERVER_RUNTIME = RuntimeFactory.createPythonRuntime();
     private static final Map<ComputerSessionKey, UUID> TRACKED_EDITOR_SESSIONS = new HashMap<>();
     private static final Map<UUID, Set<ComputerSessionKey>> TRACKED_EDITOR_SESSIONS_BY_PLAYER = new HashMap<>();
+
+    private static PythonRuntime serverRuntime() {
+        return ServerRuntimeHolder.INSTANCE;
+    }
+
+    private static final class ServerRuntimeHolder {
+        private static final PythonRuntime INSTANCE = RuntimeFactory.createPythonRuntime();
+    }
 
     private XLNetworking() {
     }
@@ -296,7 +303,7 @@ public final class XLNetworking {
             }
 
             try {
-                final PythonExecutionSession session = SERVER_RUNTIME.startSession(request.script(), request.executionContext(), serverExecutionLimits());
+                final PythonExecutionSession session = serverRuntime().startSession(request.script(), request.executionContext(), serverExecutionLimits());
                 startExecution(request, session);
             } catch (final RuntimeException exception) {
                 XLLogicMod.LOGGER.error("Failed to start computer script session on the server thread.", exception);
@@ -755,7 +762,7 @@ public final class XLNetworking {
 
         final List<XLNetworkEndpointSnapshot> endpoints = List.copyOf(computer.getReachableEndpoints());
         try {
-            final PythonExecutionSession session = SERVER_RUNTIME.startSession(script, createExecutionContext(level, computer.getBlockPos(), endpoints), serverExecutionLimits());
+            final PythonExecutionSession session = serverRuntime().startSession(script, createExecutionContext(level, computer.getBlockPos(), endpoints), serverExecutionLimits());
             computer.beginExecution(script, session);
             return true;
         } catch (final RuntimeException exception) {

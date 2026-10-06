@@ -39,6 +39,7 @@ runs {
         systemProperty 'forge.logging.console.level', 'debug'
         workingDirectory project.layout.projectDirectory.dir('run').dir(name)
         jvmArguments.addAll('-XX:+UnlockExperimentalVMOptions', '-XX:+EnableJVMCI')
+        systemProperty 'polyglotimpl.DisableMultiReleaseCheck', 'true'
         modSource project.sourceSets.main
         dependencies {
             runtime project.configurations.libraries
@@ -78,6 +79,11 @@ tasks.named('shadowJar').configure {
     configurations = [project.configurations.libraries]
     mergeServiceFiles()
     zip64 true
+    manifest {
+        attributes(
+            'Multi-Release': 'true'
+        )
+    }
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
     exclude '**/*.exe'
     exclude '**/*.bat'

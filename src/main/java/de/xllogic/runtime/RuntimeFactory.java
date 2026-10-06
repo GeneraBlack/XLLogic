@@ -6,13 +6,17 @@ import java.util.List;
 public final class RuntimeFactory {
     private static final String UNAVAILABLE_SUMMARY = "GraalPy is not available on the current classpath.";
 
+    static {
+        System.setProperty("polyglotimpl.DisableMultiReleaseCheck", "true");
+    }
+
     private RuntimeFactory() {
     }
 
     public static PythonRuntime createPythonRuntime() {
         try {
             return new GraalPythonRuntime();
-        } catch (final RuntimeException | LinkageError exception) {
+        } catch (final Throwable exception) {
             XLLogicMod.LOGGER.warn("Falling back to unavailable GraalPy runtime.", exception);
             return UnavailablePythonRuntime.INSTANCE;
         }
